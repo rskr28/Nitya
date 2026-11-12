@@ -1,0 +1,3 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+:root{font-family:'DM Sans',sans-serif;color:#343b35;background:#f7f4eb;font-synthesis:none;text-rendering:optimizeLegibility;--forest:#244b3c;--forest-deep:#18392e;--ivory:#f7f4eb;--paper:#fffdf7;--sage:#a9bda5;--sage-pale:#e9efe6;--gold:#d5a56b;--gold-pale:#f5ead7;--lotus:#d98f82;--ink:#343b35;--muted:#777c73;--line:#e8e1d3;--shadow:0 10px 30px rgba(49,57,45,.08);--radius:20px;--sidebar-width:244px;--content-max:1440px}
+*{box-sizing:border-box}
