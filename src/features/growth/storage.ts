@@ -1,4 +1,4 @@
-import type { ActivityCounts, LessonSummary } from '../../types';
+import type { ActivityCounts, LessonSummary, LotusStage } from '../../types';
 import { canMoveToStep, type LessonStep } from '../wisdom/lessonFlow.ts';
 
 export interface PracticeRecord {
@@ -20,6 +20,11 @@ export interface LessonProgress {
   completed: boolean;
   updatedAt: string;
 }
+export interface LotusTransition {
+  from: LotusStage;
+  to: LotusStage;
+  createdAt: string;
+}
 export interface GrowthState {
   version: 1;
   lessonsExplored: string[];
@@ -27,11 +32,13 @@ export interface GrowthState {
   reflections: ReflectionRecord[];
   lessonProgress: Record<string, LessonProgress>;
   journeysCompleted: string[];
+  /** A single pending, genuine milestone change; consumed when the new stage is viewed. */
+  lotusTransition?: LotusTransition | null;
 }
 const STORAGE_KEY = 'nitya.growth.v1';
 const emptyState = (): GrowthState => ({
   version: 1, lessonsExplored: [], practices: [], reflections: [],
-  lessonProgress: {}, journeysCompleted: [],
+  lessonProgress: {}, journeysCompleted: [], lotusTransition: null,
 });
 export function readGrowth(): GrowthState {
   if (typeof window === 'undefined') return emptyState();
@@ -52,6 +59,15 @@ export function persistGrowth(state: GrowthState): GrowthState {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   window.dispatchEvent(new CustomEvent('nitya:growth-updated'));
   return state;
+}
+/** Consume a milestone animation only on the matching new stage. Refreshes cannot replay it. */
+export function consumePendingLotusTransition(currentStage: LotusStage): LotusTransition | null {
+  const state = readGrowth();
+  const pending = state.lotusTransition ?? null;
+  if (!pending || pending.to !== currentStage) return null;
+  state.lotusTransition = null;
+  persistGrowth(state);
+  return pending;
 }
 export function getActivityCounts(state = readGrowth()): ActivityCounts {
   return {
