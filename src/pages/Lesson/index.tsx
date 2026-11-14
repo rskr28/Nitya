@@ -2,7 +2,7 @@ import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Eye, Lightbulb, PencilLi
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { findLesson } from '../../data/content';
-import { completeLesson, finishWithoutReflection, recordLessonOpened, recordPractice, saveReflection, setLessonStep } from '../../features/growth/storage';
+import { finishWithoutReflection, recordLessonOpened, recordPractice, saveReflection, setLessonStep } from '../../features/growth/storage';
 import type { LessonProgress } from '../../features/growth/storage';
 import { notify } from '../../utils/toast';
 import './index.css';
@@ -19,10 +19,14 @@ export default function Lesson() {
 
   useEffect(() => {
     if (!lesson) return;
-    const state = recordLessonOpened(lesson);
-    const saved = state.lessonProgress[lesson.id];
-    setStep(saved.completed ? 'complete' : saved.currentStep);
-    setReflection(state.reflections.find((item) => item.lessonId === lesson.id)?.text ?? '');
+    try {
+      const state = recordLessonOpened(lesson);
+      const saved = state.lessonProgress[lesson.id];
+      setStep(saved.completed ? 'complete' : saved.currentStep);
+      setReflection(state.reflections.find((item) => item.lessonId === lesson.id)?.text ?? '');
+    } catch {
+      notify('Progress could not be saved in this browser. Check your storage settings.', 'error');
+    }
   }, [lesson]);
 
   if (!lesson) {
@@ -50,8 +54,11 @@ export default function Lesson() {
   };
   const markPractised = () => {
     try {
-      recordPractice(lesson, 'Notice what is within your control');
-      changeStep('reflect');
+      const state = recordPractice(lesson, 'Notice what is within your control');
+      if (state.lessonProgress[lesson.id]?.currentStep !== 'reflect') {
+        throw new Error('Practice stage was not saved');
+      }
+      setStep('reflect');
       notify('Practice attempt added to your Practice Log.');
     } catch {
       notify('We could not save your practice on this device. Please try again.', 'error');
@@ -59,16 +66,16 @@ export default function Lesson() {
   };
   const finish = (withReflection: boolean) => {
     try {
-      if (withReflection) {
-        saveReflection(lesson.id, lesson.title, reflection);
-        notify('Reflection saved. Your lesson is complete.');
-      } else {
-        finishWithoutReflection(lesson.id);
-        notify('Lesson completed without a reflection.');
+      const state = withReflection
+        ? saveReflection(lesson.id, lesson.title, reflection)
+        : finishWithoutReflection(lesson.id);
+      if (!state.lessonProgress[lesson.id]?.completed) {
+        throw new Error('Lesson completion was not saved');
       }
       setStep('complete');
+      notify(withReflection ? 'Reflection saved. Your lesson is complete.' : 'Lesson completed without a reflection.');
     } catch {
-      notify('We could not save your progress on this device. Please try again.', 'error');
+      notify('We could not save your completion on this device. Please try again.', 'error');
     }
   };
 
@@ -180,6 +187,7 @@ export default function Lesson() {
                   Save reflection <CheckCircle2 size={17} />
                 </button>
               </div>
+              <small className="muted lesson-step-count">Step 4 of 4</small>
             </>
           )}
         </div>
