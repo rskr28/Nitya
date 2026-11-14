@@ -2,7 +2,9 @@ import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Eye, Lightbulb, PencilLi
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { findLesson } from '../../data/content';
-import { finishWithoutReflection, recordLessonOpened, recordPractice, saveReflection, setLessonStep } from '../../features/growth/storage';
+import { recordLessonOpened, setLessonStep } from '../../features/growth/storage';
+import { recordPractice } from '../../features/practice/service';
+import { finishWithoutReflection, saveReflection } from '../../features/reflection/service';
 import type { LessonProgress } from '../../features/growth/storage';
 import { notify } from '../../utils/toast';
 import './index.css';
@@ -54,10 +56,8 @@ export default function Lesson() {
   };
   const markPractised = () => {
     try {
-      const state = recordPractice(lesson, 'Notice what is within your control');
-      if (state.lessonProgress[lesson.id]?.currentStep !== 'reflect') {
-        throw new Error('Practice stage was not saved');
-      }
+      const record = recordPractice(lesson, 'Notice what is within your control');
+      if (!record) throw new Error('Practice stage was not saved');
       setStep('reflect');
       notify('Practice attempt added to your Practice Log.');
     } catch {
@@ -66,12 +66,10 @@ export default function Lesson() {
   };
   const finish = (withReflection: boolean) => {
     try {
-      const state = withReflection
+      const completed = withReflection
         ? saveReflection(lesson.id, lesson.title, reflection)
         : finishWithoutReflection(lesson.id);
-      if (!state.lessonProgress[lesson.id]?.completed) {
-        throw new Error('Lesson completion was not saved');
-      }
+      if (!completed) throw new Error('Lesson completion was not saved');
       setStep('complete');
       notify(withReflection ? 'Reflection saved. Your lesson is complete.' : 'Lesson completed without a reflection.');
     } catch {
