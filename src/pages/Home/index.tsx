@@ -10,13 +10,13 @@ import './index.css';
 export default function Home() {
   const { growth, counts } = useGrowth();
   const progress = growth.lessonProgress[featuredLesson.id];
-  const actionLabel = !progress ? 'Begin learning' : progress.completed ? 'View completion' : 'Continue learning';
+  const actionLabel = !progress ? 'Begin learning' : progress.completed ? 'Review lesson' : 'Continue learning';
   const continueLabel = !progress
     ? 'Begin your first learning experience'
-    : progress.completed ? 'You completed this lesson' : 'Continue where you left off';
+    : progress.completed ? 'Revisit your completed lesson' : 'Continue where you left off';
   const continueDetail = !progress
     ? 'A thoughtful five-minute start'
-    : progress.completed ? 'Revisit your completed lesson' : `Your lesson · ${progress.currentStep}`;
+    : progress.completed ? 'Read again without changing progress' : `Your lesson · ${progress.currentStep}`;
   const featuredJourney = journeys[0];
   const completedJourney = growth.journeysCompleted.includes(featuredJourney.id);
 
@@ -31,14 +31,14 @@ export default function Home() {
       </section>
       <div className="home-grid">
         <div className="home-main">
-          <WisdomCard lesson={featuredLesson} actionLabel={actionLabel} />
+          <WisdomCard lesson={featuredLesson} actionLabel={actionLabel} reviewMode={Boolean(progress?.completed)} />
           <Link to={`/journey/${featuredJourney.id}`} className="home-journey-card surface">
             <span className="eyebrow">Your guided learning path · 3 lessons</span>
             <strong>{featuredJourney.title}</strong>
             <span>{featuredJourney.description}</span>
             <b>{completedJourney ? 'Journey completed · Revisit' : 'Explore the journey'} <ArrowRight size={15} /></b>
           </Link>
-          <Link to={`/lesson/${featuredLesson.id}`} className="continue-card surface">
+          <Link to={`/lesson/${featuredLesson.id}${progress?.completed ? '?review=1' : ''}`} className="continue-card surface">
             <span className="continue-card__icon"><PlayCircle /></span>
             <span><strong>{continueLabel}</strong><small>{continueDetail}</small></span>
             <ArrowRight size={18} />
