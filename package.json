@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "test": "node --experimental-strip-types --test tests/lotus-and-lesson-flow.test.ts"
   },
   "dependencies": {
     "lucide-react": "1.72.0",
@@ -18,6 +19,8 @@
   "devDependencies": {
     "@vitejs/plugin-react": "6.3.0",
     "typescript": "7.0.2",
-    "vite": "8.3.8"
+    "vite": "8.3.8",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0"
   }
 }
