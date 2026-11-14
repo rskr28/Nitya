@@ -1,2 +1,22 @@
-import { ArrowRight, BookOpen, Clock3 } from 'lucide-react';import { Link } from 'react-router-dom';import type { LessonSummary } from '../../types';import './index.css';
-export default function WisdomCard({lesson}:{lesson:LessonSummary}){return <article className="wisdom-card surface"><div className="wisdom-card__body"><span className="tag"><BookOpen size={14}/> Today's Wisdom</span><h2>{lesson.title}</h2><p className="wisdom-card__source">{lesson.source}</p><p>{lesson.description}</p><div className="wisdom-card__footer"><span><Clock3 size={16}/> ~ {lesson.minutes} min</span><Link className="btn" to={`/lesson/${lesson.id}`}>Begin learning <ArrowRight size={17}/></Link></div></div><div className="wisdom-card__art" role="img" aria-label="Sunrise over a peaceful mountain landscape"><span> </span></div></article>}
+import { ArrowRight, BookOpen, Clock3 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import type { LessonSummary } from '../../types';
+import './index.css';
+
+export default function WisdomCard({ lesson, actionLabel = 'Begin learning' }: { lesson: LessonSummary; actionLabel?: string }) {
+  return (
+    <article className="wisdom-card surface">
+      <div className="wisdom-card__body">
+        <span className="tag"><BookOpen size={14} /> Today's Wisdom</span>
+        <h2>{lesson.title}</h2>
+        <p className="wisdom-card__source">{lesson.source}</p>
+        <p>{lesson.description}</p>
+        <div className="wisdom-card__footer">
+          <span><Clock3 size={16} /> ~ {lesson.minutes} min</span>
+          <Link className="btn" to={`/lesson/${lesson.id}`}>{actionLabel} <ArrowRight size={17} /></Link>
+        </div>
+      </div>
+      <div className="wisdom-card__art" role="img" aria-label="Sunrise over a peaceful mountain landscape"><span> </span></div>
+    </article>
+  );
+}

@@ -1,0 +1,77 @@
+import type { ActivityCounts, LessonSummary } from '../../types';
+import { canMoveToStep, type LessonStep } from '../wisdom/lessonFlow.ts';
+
+export interface PracticeRecord {
+  id: string;
+  lessonId: string;
+  lessonTitle: string;
+  activity: string;
+  attemptedAt: string;
+}
+export interface ReflectionRecord {
+  lessonId: string;
+  lessonTitle: string;
+  text: string;
+  savedAt: string;
+}
+export interface LessonProgress {
+  lessonId: string;
+  currentStep: LessonStep;
+  completed: boolean;
+  updatedAt: string;
+}
+export interface GrowthState {
+  version: 1;
+  lessonsExplored: string[];
+  practices: PracticeRecord[];
+  reflections: ReflectionRecord[];
+  lessonProgress: Record<string, LessonProgress>;
+  journeysCompleted: string[];
+}
+const STORAGE_KEY = 'nitya.growth.v1';
+const emptyState = (): GrowthState => ({
+  version: 1, lessonsExplored: [], practices: [], reflections: [],
+  lessonProgress: {}, journeysCompleted: [],
+});
+export function readGrowth(): GrowthState {
+  if (typeof window === 'undefined') return emptyState();
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return emptyState();
+    const parsed = JSON.parse(raw) as Partial<GrowthState>;
+    if (parsed.version !== 1 || !Array.isArray(parsed.lessonsExplored) ||
+      !Array.isArray(parsed.practices) || !Array.isArray(parsed.reflections) ||
+      !parsed.lessonProgress || typeof parsed.lessonProgress !== 'object' ||
+      !Array.isArray(parsed.journeysCompleted)) return emptyState();
+    return { ...emptyState(), ...parsed } as GrowthState;
+  } catch {
+    return emptyState();
+  }
+}
+export function persistGrowth(state: GrowthState): GrowthState {
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  window.dispatchEvent(new CustomEvent('nitya:growth-updated'));
+  return state;
+}
+export function getActivityCounts(state = readGrowth()): ActivityCounts {
+  return {
+    lessonsExplored: state.lessonsExplored.length,
+    practicesAttempted: state.practices.length,
+    journeysCompleted: state.journeysCompleted.length,
+  };
+}
+export function recordLessonOpened(lesson: LessonSummary): GrowthState {
+  const state = readGrowth();
+  if (!state.lessonsExplored.includes(lesson.id)) state.lessonsExplored.push(lesson.id);
+  if (!state.lessonProgress[lesson.id]) state.lessonProgress[lesson.id] = {
+    lessonId: lesson.id, currentStep: 'discover', completed: false, updatedAt: new Date().toISOString(),
+  };
+  return persistGrowth(state);
+}
+export function setLessonStep(lessonId: string, step: LessonStep): GrowthState {
+  const state = readGrowth();
+  const previous = state.lessonProgress[lessonId];
+  if (!previous || !canMoveToStep(previous.currentStep, step) || step === 'complete') return state;
+  state.lessonProgress[lessonId] = { ...previous, currentStep: step, updatedAt: new Date().toISOString() };
+  return persistGrowth(state);
+}

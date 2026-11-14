@@ -1,1 +1,20 @@
  .search-box{height:54px;display:flex;align-items:center;gap:12px;padding:0 17px;color:var(--muted)}.search-box input{border:0;outline:0;background:transparent;width:100%;color:var(--ink)}.topic-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.topic-card{border:1px solid var(--line);padding:14px;display:grid;gap:10px;text-align:left;color:var(--ink);transition:transform .2s}.topic-card:hover,.journey-card:hover{transform:translateY(-2px)}.topic-art{height:90px;border-radius:12px;display:grid;place-items:center;font-size:38px;color:var(--forest);background:linear-gradient(145deg,#e6eddf,#f5e6ce)}.topic-art--1{background:linear-gradient(145deg,#f7e4bd,#e9eee2)}.topic-art--2{background:linear-gradient(145deg,#e5e3d7,#f5ead8)}.topic-art--3{background:linear-gradient(145deg,#f4e1d8,#e5ecdf)}.topic-card strong{font-size:.86rem}.source-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.source-card{border:1px solid var(--line);padding:15px;display:flex;align-items:center;gap:9px;font-size:.82rem}.source-card span{font-size:20px;color:var(--forest)}.source-card svg{margin-left:auto;color:var(--muted)}.journey-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.journey-card{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:13px;transition:transform .2s}.journey-card__art{border-radius:12px;min-height:130px;background:url('/images/landscape.svg') center/cover}.journey-card__art--1{filter:hue-rotate(20deg)}.journey-card h3{margin:5px 0;font-size:1.5rem}.journey-card p{font-size:.8rem;color:var(--muted);line-height:1.5}.journey-card .text-link{display:flex;align-items:center;gap:5px}
+
+.topic-card.is-selected,.source-card.is-selected{border-color:var(--forest);box-shadow:0 0 0 2px rgba(36,75,60,.12)}
+.topic-card small{font-size:.7rem;color:var(--muted)}
+.source-card.is-selected{background:var(--sage-pale)}
+.search-clear{flex:none}
+.library-results{display:grid;gap:12px}
+.library-lesson{display:flex;align-items:center;gap:16px;padding:16px;border:1px solid var(--line);transition:border-color .2s,transform .2s}
+.library-lesson:hover{border-color:var(--sage);transform:translateY(-1px)}
+.library-lesson__art{width:54px;height:54px;display:grid;place-items:center;flex:none;border-radius:14px;background:var(--sage-pale);color:var(--forest);font-size:27px}
+.library-lesson__copy{display:grid;gap:4px;flex:1;min-width:0}
+.library-lesson__copy small,.library-lesson__copy>span{font-size:.76rem;color:var(--muted)}
+.library-lesson__copy strong{font-family:'Cormorant Garamond',serif;font-size:1.35rem}
+.library-lesson>svg{color:var(--forest);flex:none}
+.journey-note{font-size:.72rem;color:var(--muted)}
+.explore-all{display:inline-flex;align-items:center;gap:5px;border:0;background:transparent;cursor:pointer}
+.clear-filters{margin-top:18px;border:0;background:transparent;color:var(--forest);font-weight:700;text-decoration:underline;cursor:pointer}
+.empty-state.surface{display:grid;gap:8px;justify-items:start;text-align:left}
+.empty-state p{margin:0;font-size:.82rem}
+@media(max-width:680px){.library-lesson{align-items:flex-start}.library-lesson__art{width:44px;height:44px}}

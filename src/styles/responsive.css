@@ -4,3 +4,18 @@
 @media(min-width:901px){.sidebar{width:var(--sidebar-width)}.app-main{margin-left:var(--sidebar-width)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media(max-width:680px){.topbar__mobile-brand{display:block}.topbar__desktop-title{display:none}}
+
+
+@media(min-width:681px) and (max-width:900px){
+  .topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .journey-grid{grid-template-columns:1fr}
+  .growth-summary{grid-template-columns:1fr}
+  .account-layout{grid-template-columns:210px minmax(0,1fr)}
+  .account-menu button{font-size:.78rem;gap:8px;padding:11px 9px}
+  .lesson-shell{padding:28px}
+}
+@media(min-width:681px) and (max-width:900px){
+  .sidebar__link{min-width:52px;min-height:48px}
+  .sidebar__link:focus-visible,.sidebar__brand:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+}
