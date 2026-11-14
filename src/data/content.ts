@@ -134,7 +134,12 @@ export const lessons: LessonContent[] = [
       renderingNote: 'NITYA editorial rendering from the Sanskrit. It is a fresh working translation, not a quotation from a published English edition. “Skill in action” is interpreted differently across commentaries; this lesson presents one practical reading rather than claiming a single exhaustive meaning.',
     },
     discover: {
-      context: 'The verse follows the description of evenness in success and failure. It presents yoga as kauśalam in action, commonly rendered as skill or skilfulness in action. The source archive records different explanatory traditions around this phrase.',
+      context: 'This is a curated thematic path, not a consecutive reading of every verse in Chapter 2. We move from 2.48 to 2.50 because both speak to acting with a steady, discerning understanding.',
+      contextualBridge: {
+        title: 'A contextual pause — Bhagavad Gītā 2.49',
+        text: 'The intervening verse develops the discussion of buddhi-yoga. Kṛṣṇa contrasts action driven by attachment to its fruits with taking refuge in buddhi. Translations and commentaries explain this in different ways: some emphasise evenness of mind, while others foreground the yoga of wisdom. Verse 2.50 then continues with the person established in buddhi and introduces the expression “skill in action”. This brief bridge makes the selection transparent without presenting our three lessons as a verse-by-verse commentary.',
+        sourceUrl: `${sourceRoot}/2.49`,
+      },
       invitation: 'Think about the difference between finishing something quickly and doing it well. What makes an action genuinely skilful in a situation that matters?',
     },
     understand: {
