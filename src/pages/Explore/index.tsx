@@ -133,7 +133,11 @@ export default function Explore() {
 
       <div className="section-title">
         <h2>Guided learning journeys</h2>
-        <button className="text-link explore-all" type="button" onClick={clearFilters}>Explore all <ArrowRight size={14} /></button>
+        {hasFilters && (
+          <button className="text-link explore-all" type="button" onClick={clearFilters}>
+            Clear filters <X size={14} />
+          </button>
+        )}
       </div>
       <div className="journey-grid">
         {filteredJourneys.map((journey, index) => (
@@ -149,9 +153,6 @@ export default function Explore() {
         ))}
         {filteredJourneys.length === 0 && <p className="empty-state">No learning journeys match this search.</p>}
       </div>
-      {hasFilters && (
-        <button className="clear-filters" type="button" onClick={clearFilters}>Clear search and selected filters</button>
-      )}
     </div>
   );
 }
