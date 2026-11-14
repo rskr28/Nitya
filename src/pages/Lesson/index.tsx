@@ -30,7 +30,7 @@ export default function Lesson() {
     try {
       const existing = readGrowth();
       const savedProgress = existing.lessonProgress[lesson.id];
-      const entry = resolveLessonEntry(savedProgress, reviewRequested);
+      const entry = resolveLessonEntry(savedProgress, reviewRequested || Boolean(savedProgress?.completed));
 
       if (entry.mode === 'review') {
         // A completed lesson opens from existing data only. Review must never write progress.
