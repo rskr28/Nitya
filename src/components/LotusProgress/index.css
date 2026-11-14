@@ -1,1 +1,14 @@
- .lotus-progress{display:flex;align-items:center;gap:18px;padding:20px;min-width:0}.lotus-progress__image{width:112px;aspect-ratio:1;flex:none;display:grid;place-items:center;background:#f3f0e5;border-radius:18px}.lotus-progress__image img{width:100%;height:100%;object-fit:contain}.lotus-progress__details{min-width:0;flex:1}.lotus-progress h3{font-size:1.7rem;margin:4px 0}.lotus-progress p{font-size:.82rem;color:var(--muted);margin-bottom:12px}.stage-track{display:flex;align-items:center;gap:8px;margin:12px 0 6px}.stage-track span{width:11px;height:11px;border:1.5px solid #a8aa9b;border-radius:50%;background:#fff}.stage-track span.is-filled{background:var(--forest);border-color:var(--forest)}.lotus-progress small{color:var(--muted);font-size:.72rem}
+ .lotus-progress{display:flex;align-items:center;gap:18px;padding:20px;min-width:0}
+.lotus-progress__image{width:112px;aspect-ratio:1;flex:none;position:relative;display:grid;place-items:center;background:#e6ede2;border-radius:18px;isolation:isolate}
+.lotus-progress__image img{width:100%;height:100%;object-fit:cover;border-radius:18px;animation:lotus-idle 7s ease-in-out infinite}
+.lotus-progress__image:after{content:'';position:absolute;inset:12%;z-index:-1;border:1px solid rgba(213,165,107,.55);border-radius:50%;animation:lotus-ripple 7s ease-out infinite}
+.lotus-progress__details{min-width:0;flex:1}.lotus-progress h3{font-size:1.7rem;margin:4px 0}.lotus-progress p{font-size:.82rem;color:var(--muted);margin-bottom:12px}
+.stage-track{display:flex;align-items:center;gap:8px;margin:12px 0 6px}.stage-track span{width:11px;height:11px;border:1.5px solid #a8aa9b;border-radius:50%;background:#fff}.stage-track span.is-filled{background:var(--forest);border-color:var(--forest)}.lotus-progress small{color:var(--muted);font-size:.72rem}
+.lotus-progress--celebrating .lotus-progress__image{animation:lotus-ring 1.4s ease-out both}.lotus-progress--celebrating .lotus-progress__image img{animation:lotus-bloom 1.4s cubic-bezier(.2,.8,.2,1) both}.lotus-progress--celebrating .lotus-progress__image:after{animation:lotus-pop 1.4s ease-out both}
+@keyframes lotus-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes lotus-ripple{0%,65%,100%{opacity:0;transform:scale(.84)}20%{opacity:.55}45%{opacity:0;transform:scale(1.12)}}
+@keyframes lotus-ring{0%{box-shadow:0 0 0 0 rgba(213,165,107,0)}35%{box-shadow:0 0 0 10px rgba(213,165,107,.26)}100%{box-shadow:0 0 0 24px rgba(213,165,107,0)}}
+@keyframes lotus-bloom{0%{opacity:.55;transform:scale(.82)}58%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+@keyframes lotus-pop{0%{opacity:.8;transform:scale(.65)}100%{opacity:0;transform:scale(1.5)}}
+@media(max-width:520px){.lotus-progress{gap:13px;padding:16px}.lotus-progress__image{width:92px}.lotus-progress h3{font-size:1.4rem}}
+@media(prefers-reduced-motion:reduce){.lotus-progress__image img,.lotus-progress__image:after,.lotus-progress--celebrating .lotus-progress__image,.lotus-progress--celebrating .lotus-progress__image img{animation:none!important}}

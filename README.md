@@ -72,3 +72,14 @@ All prototype progress is stored locally in the browser. There is no authenticat
 - Notifications, preferences and logout functionality.
 
 The frontend architecture and design system are retained from the approved frontend foundation.
+
+
+## Visual Identity & Motion v1.0
+
+The Home greeting follows the browser device's local time: morning (05:00–11:59), afternoon (12:00–16:59), evening (17:00–20:59), and night (21:00–04:59). It refreshes when the app opens, regains focus, becomes visible, and at the next local-time boundary.
+
+The supplied NITYA logo master is preserved unchanged at `public/images/brand/nitya-logo-master.png`. The light header uses a faithful crop of the supplied full lockup; the dark sidebar uses a faithful crop of the gold lotus emblem. No AI redraw, recolouring, or replacement is used.
+
+Original replaceable photography is stored under `public/images/landscapes/`, `public/images/lessons/`, and `public/images/lotus/`. Lotus idle motion is gentle; the achievement transition appears only when the completion action records a newly earned journey milestone. Reopening My Growth does not replay it. Reduced-motion settings disable decorative movement.
+
+The approved milestone logic is unchanged: only Seed → Sprout is qualified by product logic. The remaining photographic stage artwork is supplied for future use, but no thresholds or unlock rules are inferred.

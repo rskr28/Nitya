@@ -25,3 +25,6 @@
 .lesson-contextual-bridge p{font-size:.84rem;line-height:1.7;margin:0 0 10px;color:#52594f}
 .lesson-contextual-bridge .source-link{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;color:var(--forest);font-weight:700}
 .lesson-footer .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.completion-milestone{margin:24px 0;padding:22px;border:1px solid rgba(213,165,107,.35);border-radius:18px;background:linear-gradient(135deg,#fbf5e8,#f3f0e5)}
+.completion-milestone h2{margin:8px 0;color:var(--forest)}.completion-milestone>p{color:var(--muted);margin-bottom:12px}
+.completion-milestone .lotus-progress{box-shadow:none;background:rgba(255,253,247,.78)}
