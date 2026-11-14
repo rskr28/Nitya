@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import WisdomCard from '../../components/WisdomCard';
 import LotusProgress from '../../components/LotusProgress';
 import { featuredLesson, journeys } from '../../data/content';
-import { assets } from '../../config/assets';
 import { useTimeOfDay } from '../../hooks/useTimeOfDay';
 import { useGrowth } from '../../hooks/useGrowth';
 import { getLotusStage } from '../../utils/lotus';
@@ -26,11 +25,10 @@ export default function Home() {
   return (
     <div className="page home-page">
       <section
-        className={`home-hero home-hero--${time}`}
+        className={`home-hero home-hero--${time.period}`}
         style={{
-          backgroundImage: `linear-gradient(90deg, rgba(20,43,34,.72) 0%, rgba(20,43,34,.47) 48%, rgba(20,43,34,.12) 100%), url("${assets.landscapes[time]}")`,
+          backgroundImage: `linear-gradient(90deg, rgba(20,43,34,.72) 0%, rgba(20,43,34,.47) 48%, rgba(20,43,34,.12) 100%), url("${time.backgroundImage}")`,
         }}
-        aria-label={`${time} landscape`}
       >
         <div className="home-hero__copy">
           <span className="eyebrow">A moment for yourself</span>
