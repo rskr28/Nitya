@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test, { beforeEach } from 'node:test';
-import { journeys, lessons } from '../src/data/content.ts';
+import { journeys, lessons, sources, topics } from '../src/data/content.ts';
 import { finishWithoutReflection, saveReflection } from '../src/features/reflection/service.ts';
 import {
   evaluateCompletedJourneys,
@@ -46,6 +46,34 @@ test('journey definition contains 3 authored lessons with matching lesson member
     lessons.filter((lesson) => lesson.journeyId === journey.id).map((lesson) => lesson.id),
     journey.lessonIds,
   );
+});
+
+
+test('only lesson-backed topics and original sources are exposed in Explore', () => {
+  assert.deepEqual(sources, ['Bhagavad Gītā']);
+  assert.deepEqual(
+    topics.map((topic) => topic.name).sort(),
+    [...new Set(lessons.map((lesson) => lesson.topic))].sort(),
+  );
+});
+
+test('every authored lesson has the full four-stage content and a source reference', () => {
+  for (const lesson of lessons) {
+    assert.ok(lesson.discover.context.trim());
+    assert.ok(lesson.discover.invitation.trim());
+    assert.ok(lesson.understand.teaching.trim());
+    assert.ok(lesson.understand.explanation.length >= 2);
+    assert.ok(lesson.understand.modernExample.trim());
+    assert.ok(lesson.understand.nuance.trim());
+    assert.ok(lesson.practise.whatToDo.trim());
+    assert.ok(lesson.practise.whatToObserve.trim());
+    assert.ok(lesson.practise.whatToLearn.trim());
+    assert.ok(lesson.reflect.questions.length >= 2);
+    assert.ok(lesson.reference.sanskrit.trim());
+    assert.ok(lesson.reference.transliteration.trim());
+    assert.ok(lesson.reference.editorialRendering.trim());
+    assert.match(lesson.reference.sourceUrl, /^https:\/\/heritage\\.iitk\\.ac\\.in\\/SBG\\/2\\./);
+  }
 });
 
 test('lesson stage cannot be moved to Reflect without a practice event', () => {
