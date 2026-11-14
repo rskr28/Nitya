@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import type { LessonSummary } from '../../types';
 import './index.css';
 
-export default function WisdomCard({ lesson, actionLabel = 'Begin learning' }: { lesson: LessonSummary; actionLabel?: string }) {
+export default function WisdomCard({ lesson, actionLabel = 'Begin learning', reviewMode = false }: { lesson: LessonSummary; actionLabel?: string; reviewMode?: boolean }) {
   return (
     <article className="wisdom-card surface">
       <div className="wisdom-card__body">
@@ -13,7 +13,7 @@ export default function WisdomCard({ lesson, actionLabel = 'Begin learning' }: {
         <p>{lesson.description}</p>
         <div className="wisdom-card__footer">
           <span><Clock3 size={16} /> ~ {lesson.inAppMinutes} min in-app</span>
-          <Link className="btn" to={`/lesson/${lesson.id}`}>{actionLabel} <ArrowRight size={17} /></Link>
+          <Link className="btn" to={`/lesson/${lesson.id}${reviewMode ? '?review=1' : ''}`}>{actionLabel} <ArrowRight size={17} /></Link>
         </div>
       </div>
       <div className="wisdom-card__art" role="img" aria-label="Sunrise over a peaceful mountain landscape"><span> </span></div>
