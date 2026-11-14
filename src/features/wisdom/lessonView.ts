@@ -1,4 +1,4 @@
-import type { LessonStep } from './lessonFlow';
+import type { LessonStep } from './lessonFlow.ts';
 
 export interface LessonEntryProgress {
   completed: boolean;
