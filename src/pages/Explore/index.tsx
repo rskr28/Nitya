@@ -115,7 +115,7 @@ export default function Explore() {
           <Link to={`/lesson/${lesson.id}`} className="library-lesson surface" key={lesson.id}>
             <span className="library-lesson__art" aria-hidden="true">✿</span>
             <span className="library-lesson__copy">
-              <small>{lesson.source} · {lesson.minutes} min</small>
+              <small>{lesson.source} · {lesson.inAppMinutes} min in-app</small>
               <strong>{lesson.title}</strong>
               <span>{lesson.description}</span>
             </span>
@@ -144,7 +144,7 @@ export default function Explore() {
           <article className="journey-card surface" key={journey.id}>
             <div className={`journey-card__art journey-card__art--${index}`} aria-hidden="true" />
             <div>
-              <span className="eyebrow">{journey.lessons} lessons · ~{journey.totalMinutes} minutes</span>
+              <span className="eyebrow">{journey.lessons} lessons · ~{journey.inAppMinutes} min in-app</span>
               <h3>{journey.title}</h3>
               <p>{journey.description}</p>
               <Link className="text-link journey-open" to={`/journey/${journey.id}`}>Explore this journey <ArrowRight size={14} /></Link>
