@@ -1,5 +1,5 @@
-import { canMoveToStep } from '../wisdom/lessonFlow';
-import { persistGrowth, readGrowth } from '../growth/storage';
+import { canMoveToStep } from '../wisdom/lessonFlow.ts';
+import { persistGrowth, readGrowth } from '../growth/storage.ts';
 
 function completeFromReflection(lessonId: string) {
   const state = readGrowth();
