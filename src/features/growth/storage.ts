@@ -48,7 +48,7 @@ export function readGrowth(): GrowthState {
     return emptyState();
   }
 }
-function writeGrowth(state: GrowthState): GrowthState {
+export function persistGrowth(state: GrowthState): GrowthState {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   window.dispatchEvent(new CustomEvent('nitya:growth-updated'));
   return state;
@@ -66,51 +66,12 @@ export function recordLessonOpened(lesson: LessonSummary): GrowthState {
   if (!state.lessonProgress[lesson.id]) state.lessonProgress[lesson.id] = {
     lessonId: lesson.id, currentStep: 'discover', completed: false, updatedAt: new Date().toISOString(),
   };
-  return writeGrowth(state);
+  return persistGrowth(state);
 }
 export function setLessonStep(lessonId: string, step: LessonStep): GrowthState {
   const state = readGrowth();
   const previous = state.lessonProgress[lessonId];
   if (!previous || !canMoveToStep(previous.currentStep, step) || step === 'complete') return state;
   state.lessonProgress[lessonId] = { ...previous, currentStep: step, updatedAt: new Date().toISOString() };
-  return writeGrowth(state);
-}
-/** Records a self-reported attempt and advances to Reflect as one atomic update. */
-export function recordPractice(lesson: LessonSummary, activity: string): GrowthState {
-  const state = readGrowth();
-  const previous = state.lessonProgress[lesson.id];
-  if (!previous || previous.completed || previous.currentStep !== 'practise') return state;
-  const record: PracticeRecord = {
-    id: `${lesson.id}:${Date.now()}:${state.practices.length}`,
-    lessonId: lesson.id, lessonTitle: lesson.title, activity, attemptedAt: new Date().toISOString(),
-  };
-  state.practices.unshift(record);
-  state.lessonProgress[lesson.id] = {
-    ...previous, currentStep: 'reflect', updatedAt: new Date().toISOString(),
-  };
-  return writeGrowth(state);
-}
-export function completeLesson(lessonId: string): GrowthState {
-  const state = readGrowth();
-  return completeLessonInState(state, lessonId);
-}
-export function saveReflection(lessonId: string, lessonTitle: string, text: string): GrowthState {
-  const state = readGrowth();
-  const trimmed = text.trim();
-  const previous = state.lessonProgress[lessonId];
-  if (!previous || previous.currentStep !== 'reflect' || previous.completed || !trimmed) return state;
-  const record = { lessonId, lessonTitle, text: trimmed, savedAt: new Date().toISOString() };
-  state.reflections = [record, ...state.reflections.filter((item) => item.lessonId !== lessonId)];
-  return completeLessonInState(state, lessonId);
-}
-export function finishWithoutReflection(lessonId: string): GrowthState {
-  return completeLesson(lessonId);
-}
-function completeLessonInState(state: GrowthState, lessonId: string): GrowthState {
-  const previous = state.lessonProgress[lessonId];
-  if (!previous || previous.completed || !canMoveToStep(previous.currentStep, 'complete')) return state;
-  state.lessonProgress[lessonId] = {
-    ...previous, currentStep: 'complete', completed: true, updatedAt: new Date().toISOString(),
-  };
-  return writeGrowth(state);
+  return persistGrowth(state);
 }
