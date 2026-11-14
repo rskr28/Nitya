@@ -1,5 +1,5 @@
 import type { ActivityCounts, LessonSummary } from '../../types';
-import { canMoveToStep, type LessonStep } from '../wisdom/lessonFlow';
+import { canMoveToStep, type LessonStep } from '../wisdom/lessonFlow.ts';
 
 export interface PracticeRecord {
   id: string;
