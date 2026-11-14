@@ -1,24 +1,37 @@
 import { useEffect, useState } from 'react';
-import { getTimePeriod, millisecondsUntilNextPeriod, type TimePeriod } from '../features/visualIdentity/timeOfDay';
-export function useTimeOfDay(): TimePeriod {
+import { assets } from '../config/assets';
+import { getTimePeriod, greetingCopy, millisecondsUntilNextPeriod, type TimePeriod } from '../features/visualIdentity/timeOfDay';
+
+export function useTimeOfDay() {
   const [period, setPeriod] = useState<TimePeriod>(() => getTimePeriod(new Date()));
+
   useEffect(() => {
     let timeoutId = 0;
     const sync = () => {
       const now = new Date();
-      setPeriod(getTimePeriod(now));
+      const nextPeriod = getTimePeriod(now);
+      setPeriod(nextPeriod);
       window.clearTimeout(timeoutId);
       timeoutId = window.setTimeout(sync, millisecondsUntilNextPeriod(now) + 50);
     };
-    const visible = () => { if (document.visibilityState === 'visible') sync(); };
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') sync();
+    };
+
     sync();
     window.addEventListener('focus', sync);
-    document.addEventListener('visibilitychange', visible);
+    document.addEventListener('visibilitychange', onVisibility);
     return () => {
       window.clearTimeout(timeoutId);
       window.removeEventListener('focus', sync);
-      document.removeEventListener('visibilitychange', visible);
+      document.removeEventListener('visibilitychange', onVisibility);
     };
   }, []);
-  return period;
+
+  return {
+    period,
+    greeting: greetingCopy[period].title,
+    supportingText: greetingCopy[period].message,
+    backgroundImage: assets.landscapes[period],
+  };
 }
