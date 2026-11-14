@@ -1,7 +1,7 @@
 import { BookOpen, CheckCircle2, Footprints, Sprout } from 'lucide-react';
 import { useState } from 'react';
 import LotusProgress from '../../components/LotusProgress';
-import { lessons } from '../../data/content';
+import { journeys, lessons } from '../../data/content';
 import { useGrowth } from '../../hooks/useGrowth';
 import type { GrowthTab } from '../../types';
 import { getLotusStage } from '../../utils/lotus';
@@ -76,12 +76,15 @@ export default function MyGrowth() {
                   </div>
                 );
               })}
-              {growth.journeysCompleted.map((journeyId) => (
-                <div className="timeline-item" key={journeyId}>
-                  <Sprout />
-                  <div><strong>Learning journey completed</strong><p>{journeyId}</p></div>
-                </div>
-              ))}
+              {growth.journeysCompleted.map((journeyId) => {
+                const journey = journeys.find((item) => item.id === journeyId);
+                return (
+                  <div className="timeline-item" key={journeyId}>
+                    <Sprout />
+                    <div><strong>Learning journey completed</strong><p>{journey?.title ?? 'Completed journey'}</p></div>
+                  </div>
+                );
+              })}
             </div>
           </>
         )}
