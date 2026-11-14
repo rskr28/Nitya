@@ -26,3 +26,5 @@
 .journey-lesson__link{width:38px;height:38px;flex:none;border-radius:50%;display:grid;place-items:center;color:var(--forest);background:var(--sage-pale)}
 .journey-source-note{margin:18px 0;color:var(--muted);font-size:.75rem;line-height:1.6}
 @media(max-width:760px){.journey-hero{grid-template-columns:1fr}.journey-hero__growth{grid-row:1;justify-items:start}.journey-outcomes__grid{grid-template-columns:1fr}.journey-lesson{align-items:flex-start}.journey-lesson__link{margin-top:10px}}
+
+.journey-time-note{max-width:650px;margin:-12px 0 18px;color:var(--muted);font-size:.76rem;line-height:1.55}
