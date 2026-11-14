@@ -1,12 +1,13 @@
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Eye, Lightbulb, PencilLine, Target } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { findJourney, findLesson, getJourneyLessons } from '../../data/content';
-import { recordLessonOpened, setLessonStep } from '../../features/growth/storage';
+import { readGrowth, recordLessonOpened, setLessonStep } from '../../features/growth/storage';
 import { recordPractice } from '../../features/practice/service';
 import { finishWithoutReflection, saveReflection } from '../../features/reflection/service';
 import type { LessonProgress } from '../../features/growth/storage';
 import { useGrowth } from '../../hooks/useGrowth';
+import { resolveLessonEntry } from '../../features/wisdom/lessonView.ts';
 import { notify } from '../../utils/toast';
 import './index.css';
 
@@ -16,22 +17,38 @@ const labels = ['Discover', 'Understand', 'Practise', 'Reflect'];
 
 export default function Lesson() {
   const { lessonId } = useParams();
+  const [searchParams] = useSearchParams();
+  const reviewRequested = searchParams.get('review') === '1';
   const lesson = findLesson(lessonId);
   const [step, setStep] = useState<LessonProgress['currentStep']>('discover');
+  const [reviewMode, setReviewMode] = useState(false);
   const [reflection, setReflection] = useState('');
   const { growth } = useGrowth();
 
   useEffect(() => {
     if (!lesson) return;
     try {
+      const existing = readGrowth();
+      const savedProgress = existing.lessonProgress[lesson.id];
+      const entry = resolveLessonEntry(savedProgress, reviewRequested);
+
+      if (entry.mode === 'review') {
+        // A completed lesson opens from existing data only. Review must never write progress.
+        setReviewMode(true);
+        setStep('discover');
+        setReflection(existing.reflections.find((item) => item.lessonId === lesson.id)?.text ?? '');
+        return;
+      }
+
+      setReviewMode(false);
       const state = recordLessonOpened(lesson);
       const saved = state.lessonProgress[lesson.id];
-      setStep(saved.completed ? 'complete' : saved.currentStep);
+      setStep(saved?.completed ? 'complete' : saved?.currentStep ?? 'discover');
       setReflection(state.reflections.find((item) => item.lessonId === lesson.id)?.text ?? '');
     } catch {
       notify('Progress could not be saved in this browser. Check your storage settings.', 'error');
     }
-  }, [lesson]);
+  }, [lesson, reviewRequested]);
 
   if (!lesson) {
     return (
@@ -54,6 +71,10 @@ export default function Lesson() {
   const index = step === 'complete' ? 4 : steps.indexOf(step);
 
   const changeStep = (nextStep: Step) => {
+    if (reviewMode) {
+      setStep(nextStep);
+      return;
+    }
     try {
       const state = setLessonStep(lesson.id, nextStep);
       const saved = state.lessonProgress[lesson.id];
@@ -67,6 +88,7 @@ export default function Lesson() {
     changeStep(nextStep);
   };
   const markPractised = () => {
+    if (reviewMode) return;
     try {
       const record = recordPractice(lesson, lesson.practise.logLabel);
       if (!record) throw new Error('Practice stage was not saved');
@@ -77,6 +99,7 @@ export default function Lesson() {
     }
   };
   const finish = (withReflection: boolean) => {
+    if (reviewMode) return;
     try {
       const completed = withReflection
         ? saveReflection(lesson.id, lesson.title, reflection)
@@ -127,17 +150,23 @@ export default function Lesson() {
         <ArrowLeft size={17} /> Back to {journey ? 'Journey' : 'Explore'}
       </Link>
       <section className="lesson-shell surface">
+        {reviewMode && (
+          <div className="lesson-review-banner" role="status">
+            <BookOpen size={17} />
+            <span><strong>Read-only review</strong> · You can revisit every stage. No practice, reflection or progress will be recorded.</span>
+          </div>
+        )}
         <div className="lesson-top">
           <span className="eyebrow">{lesson.source}</span>
-          <span className="lesson-time">A thoughtful ~{lesson.minutes} minute experience</span>
+          <span className="lesson-time">~{lesson.inAppMinutes} min in-app learning · real-world practice takes additional time</span>
         </div>
         <div className="lesson-steps" aria-label="Lesson progress">
           {steps.map((currentStep, stepIndex) => (
             <button
               key={currentStep}
               type="button"
-              disabled={stepIndex > index}
-              onClick={() => changeStep(currentStep)}
+              disabled={!reviewMode && stepIndex > index}
+              onClick={() => reviewMode ? setStep(currentStep) : changeStep(currentStep)}
               className={step === currentStep ? 'is-active' : stepIndex < index ? 'is-done' : 'is-locked'}
               aria-current={step === currentStep ? 'step' : undefined}
             >
@@ -191,7 +220,7 @@ export default function Lesson() {
           )}
           {step === 'practise' && (
             <>
-              <span className="tag"><Target size={14} /> Practise</span>
+              <span className="tag"><Target size={14} /> {reviewMode ? 'Practise · Review' : 'Practise'}</span>
               <h1>Bring the teaching into today</h1>
               <div className="practice-block">
                 <h3><CheckCircle2 /> What to do</h3>
@@ -205,8 +234,14 @@ export default function Lesson() {
                 <h3><Lightbulb /> What to learn</h3>
                 <p>{lesson.practise.whatToLearn}</p>
               </div>
-              <button className="btn" type="button" onClick={markPractised}>I attempted this practice <ArrowRight size={17} /></button>
-              <small className="muted practice-disclaimer">This is self-reported. NITYA does not ask you to prove that you practised.</small>
+              {reviewMode ? (
+                <p className="lesson-readonly-note">Read-only review: this completed practice is shown for reference. Opening it again will not create another practice attempt.</p>
+              ) : (
+                <>
+                  <button className="btn" type="button" onClick={markPractised}>I attempted this practice <ArrowRight size={17} /></button>
+                  <small className="muted practice-disclaimer">This is self-reported. NITYA does not ask you to prove that you practised.</small>
+                </>
+              )}
             </>
           )}
           {step === 'reflect' && (
@@ -219,29 +254,52 @@ export default function Lesson() {
                   <p key={questionIndex}><span>{questionIndex + 1}</span>{question}</p>
                 ))}
               </div>
-              <textarea
-                className="field reflection-input"
-                value={reflection}
-                onChange={(event) => setReflection(event.target.value)}
-                maxLength={500}
-                placeholder="Write a few words, or leave this blank and skip..."
-                aria-label="Your reflection"
-              />
-              <small className="muted">{reflection.length}/500 characters</small>
-              <div className="reflection-actions">
-                <button className="btn btn-secondary" type="button" onClick={() => finish(false)}>Skip reflection</button>
-                <button className="btn" type="button" onClick={() => finish(true)} disabled={!reflection.trim()}>
-                  Save reflection <CheckCircle2 size={17} />
-                </button>
-              </div>
+              {reviewMode ? (
+                <div className="lesson-readonly-reflection">
+                  <strong>Read-only review</strong>
+                  {reflection.trim()
+                    ? <p>{reflection}</p>
+                    : <p className="muted">No reflection was saved for this lesson. Reflection was optional when you completed it.</p>}
+                </div>
+              ) : (
+                <>
+                  <textarea
+                    className="field reflection-input"
+                    value={reflection}
+                    onChange={(event) => setReflection(event.target.value)}
+                    maxLength={500}
+                    placeholder="Write a few words, or leave this blank and skip..."
+                    aria-label="Your reflection"
+                  />
+                  <small className="muted">{reflection.length}/500 characters</small>
+                  <div className="reflection-actions">
+                    <button className="btn btn-secondary" type="button" onClick={() => finish(false)}>Skip reflection</button>
+                    <button className="btn" type="button" onClick={() => finish(true)} disabled={!reflection.trim()}>
+                      Save reflection <CheckCircle2 size={17} />
+                    </button>
+                  </div>
+                </>
+              )}
               <small className="muted lesson-step-count">Step 4 of 4 · Reflection is optional</small>
             </>
           )}
         </div>
-        {step !== 'reflect' && (
+        {(reviewMode || step !== 'reflect') && (
           <div className="lesson-footer">
-            <span className="muted">Step {index + 1} of 4</span>
-            {step !== 'practise' && <button className="btn" type="button" onClick={continueLesson}>Continue <ArrowRight size={17} /></button>}
+            {reviewMode ? (
+              <>
+                <button className="btn btn-secondary" type="button" disabled={index === 0} onClick={() => setStep(steps[index - 1])}>Previous</button>
+                <span className="muted">Review step {index + 1} of 4</span>
+                {index < steps.length - 1
+                  ? <button className="btn" type="button" onClick={() => setStep(steps[index + 1])}>Next <ArrowRight size={17} /></button>
+                  : <Link className="btn" to={journey ? `/journey/${journey.id}` : '/growth'}>Back to journey</Link>}
+              </>
+            ) : (
+              <>
+                <span className="muted">Step {index + 1} of 4</span>
+                {step !== 'practise' && <button className="btn" type="button" onClick={continueLesson}>Continue <ArrowRight size={17} /></button>}
+              </>
+            )}
           </div>
         )}
       </section>
