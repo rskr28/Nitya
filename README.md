@@ -21,7 +21,9 @@ npm run build
 
 The prototype includes one complete, three-lesson learning journey:
 
-**Understanding the Art of Action** — a guided path through Bhagavad Gītā 2.47, 2.48 and 2.50.
+**Understanding the Art of Action** — a curated thematic path through Bhagavad Gītā 2.47, 2.48 and 2.50, with an editorial context bridge explaining the intervening 2.49.
+
+The journey's ~18-minute estimate is **in-app reading and guided-learning time only**. It excludes real-world exercises, which take additional time and may be completed at the learner's own pace over multiple days.
 
 Each lesson includes:
 - Original Sanskrit and IAST transliteration.
@@ -33,11 +35,14 @@ Each lesson includes:
 The source verse pages link to the IIT Kanpur Heritage Bhagavad Gītā archive, which provides the Sanskrit text, word analysis, translations and commentarial material from multiple traditions:
 - [Bhagavad Gītā 2.47](https://heritage.iitk.ac.in/SBG/2.47)
 - [Bhagavad Gītā 2.48](https://heritage.iitk.ac.in/SBG/2.48)
+- [Bhagavad Gītā 2.49 — contextual bridge](https://heritage.iitk.ac.in/SBG/2.49)
 - [Bhagavad Gītā 2.50](https://heritage.iitk.ac.in/SBG/2.50)
 
 The wording labelled “NITYA editorial rendering” is a fresh working rendering from the Sanskrit for this product. The explanations and exercises are modern editorial applications, not quotations or claims that one interpretation exhausts the tradition. Translation and commentary traditions differ, particularly in their interpretation of yoga, buddhi and kauśalam.
 
 ## Learning journey completion
+
+A completed lesson can be reopened in read-only review mode. Review allows the learner to revisit all four stages and any saved reflection; it does not write progress, create practice records or alter rewards.
 
 A lesson can be completed only after the learner:
 1. Moves through Discover and Understand.
