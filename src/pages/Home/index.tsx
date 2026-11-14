@@ -10,6 +10,7 @@ import './index.css';
 export default function Home() {
   const { growth, counts } = useGrowth();
   const progress = growth.lessonProgress[featuredLesson.id];
+  const actionLabel = !progress ? 'Begin learning' : progress.completed ? 'View completion' : 'Continue learning';
   const continueLabel = !progress
     ? 'Begin your first learning experience'
     : progress.completed ? 'You completed this lesson' : 'Continue where you left off';
@@ -28,7 +29,7 @@ export default function Home() {
       </section>
       <div className="home-grid">
         <div className="home-main">
-          <WisdomCard lesson={featuredLesson} />
+          <WisdomCard lesson={featuredLesson} actionLabel={actionLabel} />
           <Link to={`/lesson/${featuredLesson.id}`} className="continue-card surface">
             <span className="continue-card__icon"><PlayCircle /></span>
             <span><strong>{continueLabel}</strong><small>{continueDetail}</small></span>
