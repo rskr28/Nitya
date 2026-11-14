@@ -1,45 +1,12 @@
-import { canMoveToStep } from '../wisdom/lessonFlow.ts';
-import { persistGrowth, readGrowth } from '../growth/storage.ts';
-
-function completeFromReflection(lessonId: string) {
-  const state = readGrowth();
-  const previous = state.lessonProgress[lessonId];
-  if (!previous || previous.completed || !canMoveToStep(previous.currentStep, 'complete')) return false;
-  state.lessonProgress[lessonId] = {
-    ...previous,
-    currentStep: 'complete',
-    completed: true,
-    updatedAt: new Date().toISOString(),
-  };
-  persistGrowth(state);
-  return true;
-}
+import { completeLesson } from '../journey/service.ts';
 
 export function saveReflection(lessonId: string, lessonTitle: string, text: string): boolean {
   const trimmed = text.trim();
   if (!trimmed) return false;
-  const state = readGrowth();
-  const previous = state.lessonProgress[lessonId];
-  if (!previous || previous.currentStep !== 'reflect' || previous.completed) return false;
-
-  const record = {
-    lessonId,
-    lessonTitle,
-    text: trimmed,
-    savedAt: new Date().toISOString(),
-  };
-  state.reflections = [record, ...state.reflections.filter((item) => item.lessonId !== lessonId)];
-  state.lessonProgress[lessonId] = {
-    ...previous,
-    currentStep: 'complete',
-    completed: true,
-    updatedAt: new Date().toISOString(),
-  };
-  persistGrowth(state);
-  return true;
+  return completeLesson(lessonId, { lessonTitle, text: trimmed }).completed;
 }
 
-/** Skipping is a completion choice; it deliberately does not create a reflection record. */
+/** Reflection is optional: skip completes the eligible lesson without a reflection record. */
 export function finishWithoutReflection(lessonId: string): boolean {
-  return completeFromReflection(lessonId);
+  return completeLesson(lessonId).completed;
 }

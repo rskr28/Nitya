@@ -71,7 +71,8 @@ export function recordLessonOpened(lesson: LessonSummary): GrowthState {
 export function setLessonStep(lessonId: string, step: LessonStep): GrowthState {
   const state = readGrowth();
   const previous = state.lessonProgress[lessonId];
-  if (!previous || !canMoveToStep(previous.currentStep, step) || step === 'complete') return state;
+  // Reflect is reachable only through recordPractice, which first creates the self-reported practice event.
+  if (!previous || step === 'reflect' || step === 'complete' || !canMoveToStep(previous.currentStep, step)) return state;
   state.lessonProgress[lessonId] = { ...previous, currentStep: step, updatedAt: new Date().toISOString() };
   return persistGrowth(state);
 }
