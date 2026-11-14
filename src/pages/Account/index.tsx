@@ -1,5 +1,6 @@
 import { Bell, Info, LogOut, SlidersHorizontal, ShieldCheck, UserRound } from 'lucide-react';
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { notify } from '../../utils/toast';
 import './index.css';
 
