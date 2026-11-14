@@ -72,7 +72,7 @@ test('every authored lesson has the full four-stage content and a source referen
     assert.ok(lesson.reference.sanskrit.trim());
     assert.ok(lesson.reference.transliteration.trim());
     assert.ok(lesson.reference.editorialRendering.trim());
-    assert.match(lesson.reference.sourceUrl, /^https:\/\/heritage\\.iitk\\.ac\\.in\\/SBG\\/2\\./);
+    assert.ok(lesson.reference.sourceUrl.startsWith('https://heritage.iitk.ac.in/SBG/2.'));
   }
 });
 
