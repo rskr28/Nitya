@@ -188,6 +188,16 @@ export default function Lesson() {
                 <p>{lesson.discover.context}</p>
                 <p>{lesson.discover.invitation}</p>
               </div>
+              {lesson.discover.contextualBridge && (
+                <aside className="lesson-contextual-bridge">
+                  <span className="eyebrow">Context for this curated selection</span>
+                  <h3>{lesson.discover.contextualBridge.title}</h3>
+                  <p>{lesson.discover.contextualBridge.text}</p>
+                  <a className="source-link" href={lesson.discover.contextualBridge.sourceUrl} target="_blank" rel="noreferrer">
+                    Read Bhagavad Gītā 2.49 in the IIT Kanpur Heritage archive <ArrowRight size={14} />
+                  </a>
+                </aside>
+              )}
               <section className="verse-card" aria-label="Original verse and editorial rendering">
                 <span className="eyebrow">Bhagavad Gītā · {lesson.reference.chapter}.{lesson.reference.verse}</span>
                 <h3>Original Sanskrit</h3>
