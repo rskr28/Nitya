@@ -1,5 +1,5 @@
-import { journeys } from '../../data/content';
-import { persistGrowth, readGrowth, type GrowthState } from '../growth/storage';
+import { journeys } from '../../data/content.ts';
+import { persistGrowth, readGrowth, type GrowthState } from '../growth/storage.ts';
 
 export interface LessonCompletionResult {
   completed: boolean;
