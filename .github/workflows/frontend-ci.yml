@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - feat/frontend-journey
+      - feat/content-journey-v1
 
 jobs:
   verify:
