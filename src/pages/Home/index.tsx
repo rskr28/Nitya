@@ -15,7 +15,7 @@ export default function Home() {
     ? 'Begin your first learning experience'
     : progress.completed ? 'Revisit your completed lesson' : 'Continue where you left off';
   const continueDetail = !progress
-    ? 'A thoughtful five-minute start'
+    ? 'A short in-app introduction'
     : progress.completed ? 'Read again without changing progress' : `Your lesson · ${progress.currentStep}`;
   const featuredJourney = journeys[0];
   const completedJourney = growth.journeysCompleted.includes(featuredJourney.id);
