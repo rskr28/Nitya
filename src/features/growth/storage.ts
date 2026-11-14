@@ -1,4 +1,5 @@
 import type { ActivityCounts, LessonSummary } from '../../types';
+import { canMoveToStep, type LessonStep } from '../wisdom/lessonFlow';
 
 export interface PracticeRecord {
   id: string;
@@ -15,7 +16,7 @@ export interface ReflectionRecord {
 }
 export interface LessonProgress {
   lessonId: string;
-  currentStep: 'discover' | 'understand' | 'practise' | 'reflect' | 'complete';
+  currentStep: LessonStep;
   completed: boolean;
   updatedAt: string;
 }
@@ -40,7 +41,8 @@ export function readGrowth(): GrowthState {
     const parsed = JSON.parse(raw) as Partial<GrowthState>;
     if (parsed.version !== 1 || !Array.isArray(parsed.lessonsExplored) ||
       !Array.isArray(parsed.practices) || !Array.isArray(parsed.reflections) ||
-      !parsed.lessonProgress || !Array.isArray(parsed.journeysCompleted)) return emptyState();
+      !parsed.lessonProgress || typeof parsed.lessonProgress !== 'object' ||
+      !Array.isArray(parsed.journeysCompleted)) return emptyState();
     return { ...emptyState(), ...parsed } as GrowthState;
   } catch {
     return emptyState();
@@ -66,42 +68,39 @@ export function recordLessonOpened(lesson: LessonSummary): GrowthState {
   };
   return writeGrowth(state);
 }
-export function setLessonStep(lessonId: string, step: LessonProgress['currentStep']): GrowthState {
+export function setLessonStep(lessonId: string, step: LessonStep): GrowthState {
   const state = readGrowth();
   const previous = state.lessonProgress[lessonId];
-  if (!previous) return state;
-  const order: LessonProgress['currentStep'][] = ['discover', 'understand', 'practise', 'reflect', 'complete'];
-  const nextIndex = order.indexOf(step);
-  const previousIndex = order.indexOf(previous.currentStep);
-  if (nextIndex > previousIndex + 1) return state;
+  if (!previous || !canMoveToStep(previous.currentStep, step) || step === 'complete') return state;
   state.lessonProgress[lessonId] = { ...previous, currentStep: step, updatedAt: new Date().toISOString() };
   return writeGrowth(state);
 }
+/** Records a self-reported attempt and advances to Reflect as one atomic update. */
 export function recordPractice(lesson: LessonSummary, activity: string): GrowthState {
   const state = readGrowth();
+  const previous = state.lessonProgress[lesson.id];
+  if (!previous || previous.completed || previous.currentStep !== 'practise') return state;
   const record: PracticeRecord = {
-    id: `${lesson.id}:${Date.now()}`, lessonId: lesson.id, lessonTitle: lesson.title,
-    activity, attemptedAt: new Date().toISOString(),
+    id: `${lesson.id}:${Date.now()}:${state.practices.length}`,
+    lessonId: lesson.id, lessonTitle: lesson.title, activity, attemptedAt: new Date().toISOString(),
   };
   state.practices.unshift(record);
+  state.lessonProgress[lesson.id] = {
+    ...previous, currentStep: 'reflect', updatedAt: new Date().toISOString(),
+  };
   return writeGrowth(state);
 }
 export function completeLesson(lessonId: string): GrowthState {
   const state = readGrowth();
-  const previous = state.lessonProgress[lessonId];
-  if (!previous) return state;
-  state.lessonProgress[lessonId] = {
-    ...previous, currentStep: 'complete', completed: true, updatedAt: new Date().toISOString(),
-  };
-  return writeGrowth(state);
+  return completeLessonInState(state, lessonId);
 }
 export function saveReflection(lessonId: string, lessonTitle: string, text: string): GrowthState {
   const state = readGrowth();
   const trimmed = text.trim();
-  if (trimmed) {
-    const record = { lessonId, lessonTitle, text: trimmed, savedAt: new Date().toISOString() };
-    state.reflections = [record, ...state.reflections.filter(item => item.lessonId !== lessonId)];
-  }
+  const previous = state.lessonProgress[lessonId];
+  if (!previous || previous.currentStep !== 'reflect' || previous.completed || !trimmed) return state;
+  const record = { lessonId, lessonTitle, text: trimmed, savedAt: new Date().toISOString() };
+  state.reflections = [record, ...state.reflections.filter((item) => item.lessonId !== lessonId)];
   return completeLessonInState(state, lessonId);
 }
 export function finishWithoutReflection(lessonId: string): GrowthState {
@@ -109,7 +108,7 @@ export function finishWithoutReflection(lessonId: string): GrowthState {
 }
 function completeLessonInState(state: GrowthState, lessonId: string): GrowthState {
   const previous = state.lessonProgress[lessonId];
-  if (!previous) return state;
+  if (!previous || previous.completed || !canMoveToStep(previous.currentStep, 'complete')) return state;
   state.lessonProgress[lessonId] = {
     ...previous, currentStep: 'complete', completed: true, updatedAt: new Date().toISOString(),
   };
