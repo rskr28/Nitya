@@ -47,7 +47,7 @@ export default function Explore() {
       <div className="page-heading">
         <span className="eyebrow">Explore at your own pace</span>
         <h1>Wisdom Library</h1>
-        <p>Discover teachings, ideas and guided learning journeys.</p>
+        <p>Discover researched teachings, practical exercises and guided learning journeys.</p>
       </div>
 
       <label className="search-box surface">
@@ -141,17 +141,17 @@ export default function Explore() {
       </div>
       <div className="journey-grid">
         {filteredJourneys.map((journey, index) => (
-          <article className="journey-card surface" key={journey.title}>
+          <article className="journey-card surface" key={journey.id}>
             <div className={`journey-card__art journey-card__art--${index}`} aria-hidden="true" />
             <div>
-              <span className="eyebrow">{journey.lessons} lessons · Curated path</span>
+              <span className="eyebrow">{journey.lessons} lessons · ~{journey.totalMinutes} minutes</span>
               <h3>{journey.title}</h3>
               <p>{journey.description}</p>
-              <small className="journey-note">Path content is being prepared for the prototype.</small>
+              <Link className="text-link journey-open" to={`/journey/${journey.id}`}>Explore this journey <ArrowRight size={14} /></Link>
             </div>
           </article>
         ))}
-        {filteredJourneys.length === 0 && <p className="empty-state">No learning journeys match this search.</p>}
+        {filteredJourneys.length === 0 && <p className="empty-state">No available journeys match this search.</p>}
       </div>
     </div>
   );
