@@ -18,3 +18,5 @@
 .empty-state.surface{display:grid;gap:8px;justify-items:start;text-align:left}
 .empty-state p{margin:0;font-size:.82rem}
 @media(max-width:680px){.library-lesson{align-items:flex-start}.library-lesson__art{width:44px;height:44px}}
+
+.journey-open{display:inline-flex;align-items:center;gap:6px;color:var(--forest);font-weight:700;font-size:.78rem;margin-top:8px}
