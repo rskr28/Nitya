@@ -13,6 +13,7 @@ import {
 } from '../src/features/growth/storage.ts';
 import { recordPractice } from '../src/features/practice/service.ts';
 import { getLotusStage } from '../src/utils/lotus.ts';
+import { resolveLessonEntry } from '../src/features/wisdom/lessonView.ts';
 
 function installStorage() {
   const values = new Map<string, string>();
@@ -74,6 +75,43 @@ test('every authored lesson has the full four-stage content and a source referen
     assert.ok(lesson.reference.editorialRendering.trim());
     assert.ok(lesson.reference.sourceUrl.startsWith('https://heritage.iitk.ac.in/SBG/2.'));
   }
+});
+
+
+test('completed lessons enter read-only review at Discover without changing saved progress', () => {
+  const completed = { completed: true, currentStep: 'complete' as const };
+  assert.deepEqual(resolveLessonEntry(completed, true), {
+    mode: 'review',
+    initialStep: 'discover',
+  });
+  assert.deepEqual(completed, { completed: true, currentStep: 'complete' });
+});
+
+test('a completed lesson without a review request retains its completion entry mode', () => {
+  assert.deepEqual(resolveLessonEntry({ completed: true, currentStep: 'complete' }, false), {
+    mode: 'completion',
+    initialStep: 'complete',
+  });
+});
+
+test('a requested review cannot bypass an incomplete lesson stage', () => {
+  assert.deepEqual(resolveLessonEntry({ completed: false, currentStep: 'practise' }, true), {
+    mode: 'learning',
+    initialStep: 'practise',
+  });
+});
+
+test('lesson three includes an explicitly linked contextual bridge to verse 2.49', () => {
+  const lesson = lessons.find((item) => item.id === 'skillful-action');
+  assert.ok(lesson?.discover.contextualBridge);
+  assert.equal(lesson.discover.contextualBridge.title, 'A contextual pause — Bhagavad Gītā 2.49');
+  assert.equal(lesson.discover.contextualBridge.sourceUrl, 'https://heritage.iitk.ac.in/SBG/2.49');
+  assert.ok(lesson.discover.context.includes('curated thematic path'));
+});
+
+test('journey and lesson time estimates are explicitly in-app learning estimates', () => {
+  assert.equal(journeys[0].inAppMinutes, 18);
+  assert.ok(lessons.every((lesson) => lesson.inAppMinutes > 0));
 });
 
 test('lesson stage cannot be moved to Reflect without a practice event', () => {
