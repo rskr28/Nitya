@@ -2,7 +2,7 @@ import { ArrowRight, PlayCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import WisdomCard from '../../components/WisdomCard';
 import LotusProgress from '../../components/LotusProgress';
-import { featuredLesson } from '../../data/content';
+import { featuredLesson, journeys } from '../../data/content';
 import { useGrowth } from '../../hooks/useGrowth';
 import { getLotusStage } from '../../utils/lotus';
 import './index.css';
@@ -17,6 +17,8 @@ export default function Home() {
   const continueDetail = !progress
     ? 'A thoughtful five-minute start'
     : progress.completed ? 'Revisit your completed lesson' : `Your lesson · ${progress.currentStep}`;
+  const featuredJourney = journeys[0];
+  const completedJourney = growth.journeysCompleted.includes(featuredJourney.id);
 
   return (
     <div className="page home-page">
@@ -30,6 +32,12 @@ export default function Home() {
       <div className="home-grid">
         <div className="home-main">
           <WisdomCard lesson={featuredLesson} actionLabel={actionLabel} />
+          <Link to={`/journey/${featuredJourney.id}`} className="home-journey-card surface">
+            <span className="eyebrow">Your guided learning path · 3 lessons</span>
+            <strong>{featuredJourney.title}</strong>
+            <span>{featuredJourney.description}</span>
+            <b>{completedJourney ? 'Journey completed · Revisit' : 'Explore the journey'} <ArrowRight size={15} /></b>
+          </Link>
           <Link to={`/lesson/${featuredLesson.id}`} className="continue-card surface">
             <span className="continue-card__icon"><PlayCircle /></span>
             <span><strong>{continueLabel}</strong><small>{continueDetail}</small></span>
@@ -40,8 +48,8 @@ export default function Home() {
           <LotusProgress stage={getLotusStage(counts)} />
           <div className="quote-card surface">
             <span>“</span>
-            <p>You have the right to action, not to the fruits of action.</p>
-            <small>Bhagavad Gita · 2.47</small>
+            <p>Give your attention to the work. Let its outcome become information, not your identity.</p>
+            <small>NITYA reflection · Inspired by Bhagavad Gītā 2.47 · Paraphrase</small>
           </div>
         </aside>
       </div>
