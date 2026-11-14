@@ -46,9 +46,13 @@ export default function Lesson() {
 
   const index = step === 'complete' ? 4 : steps.indexOf(step);
   const changeStep = (nextStep: Step) => {
-    const state = setLessonStep(lesson.id, nextStep);
-    const saved = state.lessonProgress[lesson.id];
-    if (saved) setStep(saved.currentStep);
+    try {
+      const state = setLessonStep(lesson.id, nextStep);
+      const saved = state.lessonProgress[lesson.id];
+      if (saved) setStep(saved.currentStep);
+    } catch {
+      notify('Progress could not be saved in this browser. Check your storage settings.', 'error');
+    }
   };
   const continueLesson = () => {
     const nextStep = steps[Math.min(index + 1, steps.length - 1)];
