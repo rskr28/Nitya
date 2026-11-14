@@ -30,6 +30,11 @@ export default function Journey() {
     .map((lesson) => lesson.id);
   const isComplete = growth.journeysCompleted.includes(journey.id);
   const nextLesson = journeyLessons.find((lesson) => !growth.lessonProgress[lesson.id]?.completed) ?? journeyLessons[0];
+  const revisitLesson = journeyLessons.find((lesson) => growth.lessonProgress[lesson.id]?.completed) ?? journeyLessons[0];
+  const primaryLesson = isComplete ? revisitLesson : nextLesson;
+  const primaryLessonHref = primaryLesson
+    ? `/lesson/${primaryLesson.id}${isComplete ? '?review=1' : ''}`
+    : '/explore';
 
   return (
     <div className="page journey-page">
@@ -42,9 +47,10 @@ export default function Journey() {
           <p>{journey.description}</p>
           <div className="journey-meta">
             <span><BookOpen size={16} /> {journey.lessons} lessons</span>
-            <span><Clock3 size={16} /> ~{journey.totalMinutes} minutes</span>
+            <span><Clock3 size={16} /> ~{journey.inAppMinutes} min in-app learning</span>
           </div>
-          <Link className="btn" to={nextLesson ? `/lesson/${nextLesson.id}` : '/explore'}>
+          <p className="journey-time-note">This estimate covers in-app reading and guided learning only. Real-world practices take additional time; complete them at your own pace, across one or more days.</p>
+          <Link className="btn" to={primaryLessonHref}>
             {isComplete ? 'Revisit a lesson' : completedIds.length ? 'Continue the journey' : 'Begin the journey'}
             <ArrowRight size={17} />
           </Link>
@@ -78,7 +84,7 @@ export default function Journey() {
             <article className={`journey-lesson surface ${complete ? 'is-complete' : ''}`} key={lesson.id}>
               <span className="journey-lesson__number">{complete ? <CheckCircle2 size={20} /> : index + 1}</span>
               <div className="journey-lesson__body">
-                <span className="eyebrow">{lesson.source} · ~{lesson.minutes} min</span>
+                <span className="eyebrow">{lesson.source} · ~{lesson.inAppMinutes} min in-app</span>
                 <h3>{lesson.title}</h3>
                 <p>{lesson.description}</p>
                 <div className="journey-lesson__status">
@@ -86,7 +92,7 @@ export default function Journey() {
                   {practiced && <span>Practice attempted</span>}
                 </div>
               </div>
-              <Link className="journey-lesson__link" to={`/lesson/${lesson.id}`} aria-label={`Open lesson: ${lesson.title}`}>
+              <Link className="journey-lesson__link" to={`/lesson/${lesson.id}${complete ? '?review=1' : ''}`} aria-label={`${complete ? 'Review' : 'Open'} lesson: ${lesson.title}`} title={complete ? 'Review completed lesson' : 'Open lesson'}>
                 <ArrowRight size={18} />
               </Link>
             </article>
