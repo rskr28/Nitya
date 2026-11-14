@@ -27,6 +27,11 @@ export interface LessonContent extends LessonSummary {
   discover: {
     context: string;
     invitation: string;
+    contextualBridge?: {
+      title: string;
+      text: string;
+      sourceUrl: string;
+    };
   };
   understand: {
     teaching: string;
