@@ -6,7 +6,7 @@ export interface LessonSummary {
   title: string;
   source: string;
   description: string;
-  minutes: number;
+  inAppMinutes: number;
   topic: string;
 }
 
@@ -59,7 +59,7 @@ export interface LearningJourney {
   topic: string;
   lessonIds: string[];
   lessons: number;
-  totalMinutes: number;
+  inAppMinutes: number;
   learningOutcomes: string[];
 }
 
