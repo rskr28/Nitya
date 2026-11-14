@@ -7,10 +7,8 @@ export interface LessonCompletionResult {
 }
 
 /**
- * A lesson may complete only from Reflect. Its practice is a required,
- * self-reported event already stored by recordPractice.
- * A journey completes once every lesson in its authored lessonIds is complete
- * and has a corresponding practice record. Reflection is deliberately not a gate.
+ * A journey qualifies only when every required lesson is complete and each
+ * lesson has a self-reported practice record. Reflection is never a gate.
  */
 export function evaluateCompletedJourneys(state: GrowthState): string[] {
   return journeys
@@ -22,7 +20,11 @@ export function evaluateCompletedJourneys(state: GrowthState): string[] {
     .map((journey) => journey.id);
 }
 
-export function completeLesson(lessonId: string): LessonCompletionResult {
+/** Completes the lesson, stores an optional reflection, and checks journey qualification in one write. */
+export function completeLesson(
+  lessonId: string,
+  reflection?: { lessonTitle: string; text: string },
+): LessonCompletionResult {
   const state = readGrowth();
   const previous = state.lessonProgress[lessonId];
   if (!previous || previous.completed || previous.currentStep !== 'reflect') {
@@ -35,6 +37,18 @@ export function completeLesson(lessonId: string): LessonCompletionResult {
     completed: true,
     updatedAt: new Date().toISOString(),
   };
+
+  if (reflection) {
+    state.reflections = [
+      {
+        lessonId,
+        lessonTitle: reflection.lessonTitle,
+        text: reflection.text,
+        savedAt: new Date().toISOString(),
+      },
+      ...state.reflections.filter((item) => item.lessonId !== lessonId),
+    ];
+  }
 
   const completedJourneyIds = evaluateCompletedJourneys(state);
   const newlyCompletedJourneyIds = completedJourneyIds.filter(
