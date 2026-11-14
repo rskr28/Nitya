@@ -1,5 +1,5 @@
 import type { LessonSummary } from '../../types';
-import { persistGrowth, readGrowth, type PracticeRecord } from '../growth/storage';
+import { persistGrowth, readGrowth, type PracticeRecord } from '../growth/storage.ts';
 
 /** Records a self-reported practice attempt and advances to Reflect atomically. */
 export function recordPractice(lesson: LessonSummary, activity: string): PracticeRecord | null {
