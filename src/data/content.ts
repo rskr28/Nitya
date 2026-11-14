@@ -11,7 +11,7 @@ export const journeys: LearningJourney[] = [
     topic: 'Action & responsibility',
     lessonIds: ['agency-and-action', 'steadiness-in-outcomes', 'skillful-action'],
     lessons: 3,
-    totalMinutes: 18,
+    inAppMinutes: 18,
     learningOutcomes: [
       'Separate responsible effort from outcomes you cannot fully control.',
       'Respond to success and difficulty without losing your balance.',
@@ -27,7 +27,7 @@ export const lessons: LessonContent[] = [
     title: 'Put Your Attention Where Your Agency Is',
     source: 'Bhagavad Gītā · 2.47',
     description: 'Understand the distinction between your responsibility to act and your limited control over results.',
-    minutes: 6,
+    inAppMinutes: 6,
     topic: 'Agency & action',
     reference: {
       work: 'Bhagavad Gītā',
@@ -74,7 +74,7 @@ export const lessons: LessonContent[] = [
     title: 'Stay Steady When Outcomes Change',
     source: 'Bhagavad Gītā · 2.48',
     description: 'Explore equanimity as a way to keep responding thoughtfully in success and difficulty.',
-    minutes: 6,
+    inAppMinutes: 6,
     topic: 'Equanimity',
     reference: {
       work: 'Bhagavad Gītā',
@@ -121,7 +121,7 @@ export const lessons: LessonContent[] = [
     title: 'Bring Skill and Discernment to Action',
     source: 'Bhagavad Gītā · 2.50',
     description: 'Consider what it means to act skilfully, beyond simply moving quickly or chasing a favourable result.',
-    minutes: 6,
+    inAppMinutes: 6,
     topic: 'Discernment',
     reference: {
       work: 'Bhagavad Gītā',
@@ -137,7 +137,7 @@ export const lessons: LessonContent[] = [
       context: 'This is a curated thematic path, not a consecutive reading of every verse in Chapter 2. We move from 2.48 to 2.50 because both speak to acting with a steady, discerning understanding.',
       contextualBridge: {
         title: 'A contextual pause — Bhagavad Gītā 2.49',
-        text: 'The intervening verse develops the discussion of buddhi-yoga. Kṛṣṇa contrasts action driven by attachment to its fruits with taking refuge in buddhi. Translations and commentaries explain this in different ways: some emphasise evenness of mind, while others foreground the yoga of wisdom. Verse 2.50 then continues with the person established in buddhi and introduces the expression “skill in action”. This brief bridge makes the selection transparent without presenting our three lessons as a verse-by-verse commentary.',
+        text: 'Verse 2.49 sharpens the contrast: action motivated by attachment to results is described as far inferior to buddhi-yoga, and Arjuna is urged to seek refuge in buddhi rather than act as one driven by reward. The Heritage archive shows different renderings of buddhi-yoga — including “evenness of mind” and “yoga of wisdom” — and different commentarial explanations. Verse 2.50 continues with the person united with buddhi and the phrase “yogaḥ karmasu kauśalam”. This path selects 2.47, 2.48 and 2.50 for a thematic progression; it is not a consecutive, verse-by-verse commentary.',
         sourceUrl: `${sourceRoot}/2.49`,
       },
       invitation: 'Think about the difference between finishing something quickly and doing it well. What makes an action genuinely skilful in a situation that matters?',
