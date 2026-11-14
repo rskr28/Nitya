@@ -5,6 +5,7 @@ import Explore from './pages/Explore';
 import MyGrowth from './pages/MyGrowth';
 import Account from './pages/Account';
 import Lesson from './pages/Lesson';
+import Journey from './pages/Journey';
 
 export default function App() {
   return <Routes><Route element={<AppLayout />}>
@@ -13,6 +14,7 @@ export default function App() {
     <Route path="/growth" element={<MyGrowth />} />
     <Route path="/account" element={<Account />} />
     <Route path="/lesson/:lessonId" element={<Lesson />} />
+    <Route path="/journey/:journeyId" element={<Journey />} />
     <Route path="*" element={<Navigate to="/" replace />} />
   </Route></Routes>;
 }
