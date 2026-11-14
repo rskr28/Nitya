@@ -12,7 +12,7 @@ export default function WisdomCard({ lesson, actionLabel = 'Begin learning' }: {
         <p className="wisdom-card__source">{lesson.source}</p>
         <p>{lesson.description}</p>
         <div className="wisdom-card__footer">
-          <span><Clock3 size={16} /> ~ {lesson.minutes} min</span>
+          <span><Clock3 size={16} /> ~ {lesson.inAppMinutes} min in-app</span>
           <Link className="btn" to={`/lesson/${lesson.id}`}>{actionLabel} <ArrowRight size={17} /></Link>
         </div>
       </div>
