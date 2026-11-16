@@ -40,10 +40,6 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
-      <div className="sidebar__bottom">
-        <span>Ancient Wisdom.</span>
-        <strong>Modern Living.</strong>
-      </div>
     </aside>
   );
 }
