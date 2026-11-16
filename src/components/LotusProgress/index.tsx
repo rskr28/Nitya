@@ -18,8 +18,6 @@ export default function LotusProgress({ stage }: { stage: LotusStage }) {
     if (!reducedMotion) setTransition(pending);
   }, [stage]);
 
-  const imageDescription = `${lotusStageLabels[stage]} lotus stage`;
-
   return (
     <section
       className={`lotus-progress surface ${transition ? 'lotus-progress--celebrating' : ''}`}
