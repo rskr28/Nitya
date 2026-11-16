@@ -13,17 +13,37 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <NavLink to="/" className="sidebar__brand" aria-label="NITYA home">
-        <img src={assets.brand.symbol} alt="" />
+        <img
+          className="sidebar__brand-lockup"
+          src={assets.brand.logo}
+          alt="NITYA — One good act, every day."
+        />
+        <img
+          className="sidebar__brand-symbol"
+          src={assets.brand.symbol}
+          alt=""
+          aria-hidden="true"
+        />
       </NavLink>
       <nav className="sidebar__nav" aria-label="Main navigation">
         {links.map(({ to, label, Icon }) => (
-          <NavLink key={to} to={to} end={to === '/'} title={label} aria-label={label}
-            className={({ isActive }) => `sidebar__link ${isActive ? 'is-active' : ''}`}>
-            <Icon size={19} /><span>{label}</span>
+          <NavLink
+            key={to}
+            to={to}
+            end={to === '/'}
+            title={label}
+            aria-label={label}
+            className={({ isActive }) => `sidebar__link ${isActive ? 'is-active' : ''}`}
+          >
+            <Icon size={19} />
+            <span>{label}</span>
           </NavLink>
         ))}
       </nav>
-      <div className="sidebar__bottom"><span>Ancient Wisdom.</span><strong>Modern Living.</strong></div>
+      <div className="sidebar__bottom">
+        <span>Ancient Wisdom.</span>
+        <strong>Modern Living.</strong>
+      </div>
     </aside>
   );
 }
