@@ -11,6 +11,14 @@ Runtime asset paths are maintained in `src/config/assets.ts`. These files are lo
 | `brand/nitya-symbol.png` | 245 × 203 | Compact tablet/mobile emblem | Faithful crop of the gold lotus from the master; no redraw or recolouring. |
 | `brand/favicon.png` | 64 × 64 | Browser favicon | Crop derived from the original lotus emblem. |
 
+## Brand placement rules
+
+- Desktop (for example, 1440px and 1024px): use the complete transparent lockup in a generously sized brand area at the top of the ivory sidebar. Keep the full lotus, wordmark and tagline together.
+- Compact tablet widths: use the faithful emblem crop when the sidebar becomes icon-only.
+- Mobile (for example, 390px): use the faithful emblem in the light topbar. Do not squeeze the full lockup into a small header tile.
+- The desktop top header carries only the restrained text descriptor “Ancient Wisdom. Modern Living.”; do not add a second miniature logo there.
+- Never recolour, retype, rearrange or regenerate the master logo.
+
 ## Landscape and learning artwork
 
 | File | Dimensions | Use | Origin |
