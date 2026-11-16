@@ -2,7 +2,7 @@ import type { LotusStage } from '../types';
 
 export const assets = {
   brand: {
-    logo: '/images/brand/nitya-logo-lockup.webp',
+    logo: '/images/brand/nitya-logo-lockup.png',
     symbol: '/images/brand/nitya-symbol.png',
     favicon: '/images/brand/favicon.png',
   },
