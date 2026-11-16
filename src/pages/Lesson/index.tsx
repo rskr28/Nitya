@@ -126,7 +126,7 @@ export default function Lesson() {
             <span className="eyebrow">A meaningful milestone</span>
             <h2>Your lotus has begun to bloom.</h2>
             <p>Completing this learning journey unlocked the Sprout stage.</p>
-            <LotusProgress stage="sprout" celebrate />
+            <LotusProgress stage="sprout" />
           </div>
         )}
         <div className="reflection-actions">
