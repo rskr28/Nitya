@@ -38,7 +38,7 @@ export interface GrowthState {
 const STORAGE_KEY = 'nitya.growth.v1';
 const emptyState = (): GrowthState => ({
   version: 1, lessonsExplored: [], practices: [], reflections: [],
-  lessonProgress: {}, journeysCompleted: [], lotusTransition: null,
+  lessonProgress: {}, journeysCompleted: [],
 });
 export function readGrowth(): GrowthState {
   if (typeof window === 'undefined') return emptyState();
