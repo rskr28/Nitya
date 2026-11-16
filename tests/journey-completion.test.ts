@@ -6,6 +6,7 @@ import {
   evaluateCompletedJourneys,
 } from '../src/features/journey/service.ts';
 import {
+  consumePendingLotusTransition,
   getActivityCounts,
   readGrowth,
   recordLessonOpened,
@@ -161,6 +162,11 @@ test('first journey milestone unlocks only after all lessons are practised and c
   assert.deepEqual(state.journeysCompleted, [journey.id]);
   assert.equal(getActivityCounts(state).journeysCompleted, 1);
   assert.equal(getLotusStage(getActivityCounts(state)), 'sprout');
+  assert.deepEqual(state.lotusTransition?.from, 'seed');
+  assert.deepEqual(state.lotusTransition?.to, 'sprout');
+  assert.deepEqual(consumePendingLotusTransition('sprout')?.from, 'seed');
+  assert.equal(consumePendingLotusTransition('sprout'), null, 'the milestone animation is consumed once');
+  assert.equal(readGrowth().lotusTransition, null, 'consumption is persisted across refreshes');
   assert.equal(state.reflections.length, 0, 'reflection is not required for journey completion');
 });
 
