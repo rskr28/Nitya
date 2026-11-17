@@ -13,9 +13,9 @@ Runtime image paths are maintained in `src/config/assets.ts`. Assets are served 
 
 ## Responsive brand placement
 
-- Desktop: complete transparent lockup centred directly on the ivory sidebar surface, maximum artwork width 188px within a 168px masthead zone. Keep the logo at its natural aspect ratio with generous top, bottom and side breathing room. The anchor has no card, shadow, border, opaque tile or decorative frame; the first navigation item follows after a deliberate whitespace gap.
+- Desktop: complete transparent lockup centred directly on the ivory sidebar surface, maximum artwork width 172px within a 168px masthead zone. Keep the logo at its natural aspect ratio with generous top, bottom and side breathing room. The anchor has no card, shadow, border, opaque tile or decorative frame; the first navigation item follows after a deliberate whitespace gap.
 - Tablet widths where the sidebar becomes icon-only: use the faithful transparent emblem crop.
-- Mobile: use the faithful emblem in the light topbar, optically aligned with the header actions.
+- Mobile: use the faithful emblem in the light topbar, optically aligned with the header actions; retain the restrained descriptor at widths where it fits, hiding only below 360px to prevent crowding.
 - Desktop top header: restrained text descriptor “Ancient Wisdom. Modern Living.” only.
 - Never recolour, retype, rearrange, stretch or regenerate the supplied logo. The master remains untouched.
 
