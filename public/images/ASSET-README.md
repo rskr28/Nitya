@@ -7,13 +7,13 @@ Runtime image paths are maintained in `src/config/assets.ts`. Assets are served 
 | File | Dimensions | Use | Origin / treatment |
 |---|---:|---|---|
 | `brand/nitya-logo-master.png` | 640 × 640 | Untouched source of truth | Original logo supplied by the product owner. Preserve byte-for-byte. |
-| `brand/nitya-logo-lockup.webp` | 320 × 224 | Complete desktop sidebar masthead | Transparent RGBA WebP derived faithfully from the master. Only the flat white paper background and outer whitespace are removed; lotus, wordmark, original proportions and tagline remain together. |
+| `brand/nitya-logo-lockup.webp` | 320 × 224 | Complete desktop sidebar masthead | Transparent RGBA WebP derived faithfully from the master. Only the flat white paper background and outer whitespace are removed; lotus, wordmark, original proportions and tagline remain together. Displayed at a maximum width of 188px in the 244px ivory rail. |
 | `brand/nitya-symbol.png` | 245 × 203 | Compact tablet/mobile emblem | Faithful crop of the gold lotus from the master; no redraw or recolouring. |
 | `brand/favicon.png` | 64 × 53 | Browser favicon | Crop derived from the original lotus emblem. |
 
 ## Responsive brand placement
 
-- Desktop: complete transparent lockup centred directly on the ivory sidebar surface, maximum artwork width 190px, with generous whitespace and no card, shadow, border or image tile.
+- Desktop: complete transparent lockup centred directly on the ivory sidebar surface, maximum artwork width 188px within a 168px masthead zone. Keep the logo at its natural aspect ratio with generous top, bottom and side breathing room. The anchor has no card, shadow, border, opaque tile or decorative frame; the first navigation item follows after a deliberate whitespace gap.
 - Tablet widths where the sidebar becomes icon-only: use the faithful transparent emblem crop.
 - Mobile: use the faithful emblem in the light topbar, optically aligned with the header actions.
 - Desktop top header: restrained text descriptor “Ancient Wisdom. Modern Living.” only.
