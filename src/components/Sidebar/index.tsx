@@ -1,5 +1,6 @@
 import { Compass, House, Sprout } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import { assets } from '../../config/assets';
 import './index.css';
 
 const links = [
@@ -12,7 +13,17 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <NavLink to="/" className="sidebar__brand" aria-label="NITYA home">
-        <span className="brand-mark">✿</span><span>NITYA</span>
+        <img
+          className="sidebar__brand-lockup"
+          src={assets.brand.logo}
+          alt="NITYA — One good act, every day."
+        />
+        <img
+          className="sidebar__brand-symbol"
+          src={assets.brand.symbol}
+          alt=""
+          aria-hidden="true"
+        />
       </NavLink>
       <nav className="sidebar__nav" aria-label="Main navigation">
         {links.map(({ to, label, Icon }) => (
@@ -24,11 +35,11 @@ export default function Sidebar() {
             aria-label={label}
             className={({ isActive }) => `sidebar__link ${isActive ? 'is-active' : ''}`}
           >
-            <Icon size={19} /><span>{label}</span>
+            <Icon size={19} />
+            <span>{label}</span>
           </NavLink>
         ))}
       </nav>
-      <div className="sidebar__bottom"><span>Ancient Wisdom.</span><strong>Modern Living.</strong></div>
     </aside>
   );
 }

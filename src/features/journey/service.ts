@@ -1,5 +1,6 @@
 import { journeys } from '../../data/content.ts';
-import { persistGrowth, readGrowth, type GrowthState } from '../growth/storage.ts';
+import { persistGrowth, readGrowth, getActivityCounts, type GrowthState } from '../growth/storage.ts';
+import { getLotusStage } from '../../utils/lotus.ts';
 
 export interface LessonCompletionResult {
   completed: boolean;
@@ -20,7 +21,7 @@ export function evaluateCompletedJourneys(state: GrowthState): string[] {
     .map((journey) => journey.id);
 }
 
-/** Completes the lesson, stores an optional reflection, and checks journey qualification in one write. */
+/** Completes the lesson and records a lotus transition only for a genuine new milestone. */
 export function completeLesson(
   lessonId: string,
   reflection?: { lessonTitle: string; text: string },
@@ -31,6 +32,7 @@ export function completeLesson(
     return { completed: false, newlyCompletedJourneyIds: [] };
   }
 
+  const previousStage = getLotusStage(getActivityCounts(state));
   state.lessonProgress[lessonId] = {
     ...previous,
     currentStep: 'complete',
@@ -55,6 +57,15 @@ export function completeLesson(
     (journeyId) => !state.journeysCompleted.includes(journeyId),
   );
   state.journeysCompleted = [...new Set([...state.journeysCompleted, ...newlyCompletedJourneyIds])];
+
+  const nextStage = getLotusStage(getActivityCounts(state));
+  if (nextStage !== previousStage) {
+    state.lotusTransition = {
+      from: previousStage,
+      to: nextStage,
+      createdAt: new Date().toISOString(),
+    };
+  }
   persistGrowth(state);
 
   return { completed: true, newlyCompletedJourneyIds };

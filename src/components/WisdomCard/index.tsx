@@ -1,6 +1,7 @@
 import { ArrowRight, BookOpen, Clock3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { LessonSummary } from '../../types';
+import { assets } from '../../config/assets';
 import './index.css';
 
 export default function WisdomCard({ lesson, actionLabel = 'Begin learning', reviewMode = false }: { lesson: LessonSummary; actionLabel?: string; reviewMode?: boolean }) {
@@ -16,7 +17,9 @@ export default function WisdomCard({ lesson, actionLabel = 'Begin learning', rev
           <Link className="btn" to={`/lesson/${lesson.id}${reviewMode ? '?review=1' : ''}`}>{actionLabel} <ArrowRight size={17} /></Link>
         </div>
       </div>
-      <div className="wisdom-card__art" role="img" aria-label="Sunrise over a peaceful mountain landscape"><span> </span></div>
+      <div className="wisdom-card__art">
+        <img src={assets.wisdom.lotus} alt="A pink lotus in bloom resting on still water" loading="lazy" decoding="async" />
+      </div>
     </article>
   );
 }

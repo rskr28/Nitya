@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import WisdomCard from '../../components/WisdomCard';
 import LotusProgress from '../../components/LotusProgress';
 import { featuredLesson, journeys } from '../../data/content';
+import { useTimeOfDay } from '../../hooks/useTimeOfDay';
 import { useGrowth } from '../../hooks/useGrowth';
 import { getLotusStage } from '../../utils/lotus';
 import './index.css';
 
 export default function Home() {
   const { growth, counts } = useGrowth();
+  const time = useTimeOfDay();
   const progress = growth.lessonProgress[featuredLesson.id];
   const actionLabel = !progress ? 'Begin learning' : progress.completed ? 'Review lesson' : 'Continue learning';
   const continueLabel = !progress
@@ -22,11 +24,16 @@ export default function Home() {
 
   return (
     <div className="page home-page">
-      <section className="home-hero">
-        <div>
+      <section
+        className={`home-hero home-hero--${time.period}`}
+        style={{
+          backgroundImage: `linear-gradient(90deg, rgba(20,43,34,.72) 0%, rgba(20,43,34,.47) 48%, rgba(20,43,34,.12) 100%), url("${time.backgroundImage}")`,
+        }}
+      >
+        <div className="home-hero__copy">
           <span className="eyebrow">A moment for yourself</span>
-          <h1>Good morning.</h1>
-          <p>Here's something meaningful for you today.</p>
+          <h1>{time.greeting}</h1>
+          <p>{time.supportingText}</p>
         </div>
       </section>
       <div className="home-grid">

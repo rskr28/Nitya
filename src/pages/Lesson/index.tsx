@@ -6,6 +6,7 @@ import { readGrowth, recordLessonOpened, setLessonStep } from '../../features/gr
 import { recordPractice } from '../../features/practice/service';
 import { finishWithoutReflection, saveReflection } from '../../features/reflection/service';
 import type { LessonProgress } from '../../features/growth/storage';
+import LotusProgress from '../../components/LotusProgress';
 import { useGrowth } from '../../hooks/useGrowth';
 import { resolveLessonEntry } from '../../features/wisdom/lessonView.ts';
 import { notify } from '../../utils/toast';
@@ -23,6 +24,7 @@ export default function Lesson() {
   const [step, setStep] = useState<LessonProgress['currentStep']>('discover');
   const [reviewMode, setReviewMode] = useState(false);
   const [reflection, setReflection] = useState('');
+  const [milestoneUnlocked, setMilestoneUnlocked] = useState(false);
   const { growth } = useGrowth();
 
   useEffect(() => {
@@ -101,10 +103,15 @@ export default function Lesson() {
   const finish = (withReflection: boolean) => {
     if (reviewMode) return;
     try {
+      const previouslyCompletedJourneys = readGrowth().journeysCompleted;
       const completed = withReflection
         ? saveReflection(lesson.id, lesson.title, reflection)
         : finishWithoutReflection(lesson.id);
       if (!completed) throw new Error('Lesson completion was not saved');
+      const newlyCompletedJourney = readGrowth().journeysCompleted.some(
+        (journeyId) => !previouslyCompletedJourneys.includes(journeyId),
+      );
+      if (newlyCompletedJourney) setMilestoneUnlocked(true);
       setStep('complete');
       notify(withReflection ? 'Reflection saved. Your lesson is complete.' : 'Lesson completed without a reflection.');
     } catch {
@@ -132,6 +139,14 @@ export default function Lesson() {
             <span>{lesson.source}</span>
             <span>{reflection.trim() ? 'Reflection saved on this device' : 'Completed without a reflection'}</span>
           </div>
+          {milestoneUnlocked && (
+            <div className="completion-milestone" role="status">
+              <span className="eyebrow">A meaningful milestone</span>
+              <h2>Your lotus has begun to bloom.</h2>
+              <p>Completing this learning journey unlocked the Sprout stage.</p>
+              <LotusProgress stage="sprout" />
+            </div>
+          )}
           <div className="reflection-actions">
             {nextLesson && !journeyComplete && (
               <Link className="btn" to={`/lesson/${nextLesson.id}`}>Next lesson <ArrowRight size={17} /></Link>

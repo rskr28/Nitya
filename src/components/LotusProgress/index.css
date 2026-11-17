@@ -1,1 +1,19 @@
- .lotus-progress{display:flex;align-items:center;gap:18px;padding:20px;min-width:0}.lotus-progress__image{width:112px;aspect-ratio:1;flex:none;display:grid;place-items:center;background:#f3f0e5;border-radius:18px}.lotus-progress__image img{width:100%;height:100%;object-fit:contain}.lotus-progress__details{min-width:0;flex:1}.lotus-progress h3{font-size:1.7rem;margin:4px 0}.lotus-progress p{font-size:.82rem;color:var(--muted);margin-bottom:12px}.stage-track{display:flex;align-items:center;gap:8px;margin:12px 0 6px}.stage-track span{width:11px;height:11px;border:1.5px solid #a8aa9b;border-radius:50%;background:#fff}.stage-track span.is-filled{background:var(--forest);border-color:var(--forest)}.lotus-progress small{color:var(--muted);font-size:.72rem}
+.lotus-progress{display:flex;align-items:center;gap:18px;padding:20px;min-width:0}
+.lotus-progress__image{width:112px;aspect-ratio:1;flex:none;position:relative;overflow:hidden;display:grid;place-items:center;background:#e6ede2;border-radius:18px;isolation:isolate}
+.lotus-progress__photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:18px}
+.lotus-progress__photo--idle{animation:lotus-idle 7s ease-in-out infinite}
+.lotus-progress__photo--from{z-index:1;animation:lotus-old-stage 1.45s ease-out both}
+.lotus-progress__photo--to{z-index:2;animation:lotus-new-stage 1.45s cubic-bezier(.2,.8,.2,1) both}
+.lotus-progress__water{position:absolute;z-index:3;left:13%;right:13%;bottom:12%;height:18%;border:1px solid rgba(255,255,255,0);border-radius:50%;pointer-events:none;animation:lotus-idle-ripple 8s ease-in-out infinite}
+.lotus-progress--celebrating .lotus-progress__water{animation:lotus-water-ripple 1.45s ease-out both}
+.lotus-progress__glow{position:absolute;z-index:4;inset:8%;border:1px solid rgba(232,194,115,.75);border-radius:50%;pointer-events:none;animation:lotus-golden-ring 1.45s ease-out both}
+.lotus-progress__details{min-width:0;flex:1}.lotus-progress h3{font-size:1.7rem;margin:4px 0}.lotus-progress p{font-size:.82rem;color:var(--muted);margin-bottom:12px}
+.stage-track{display:flex;align-items:center;gap:8px;margin:12px 0 6px}.stage-track span{width:11px;height:11px;border:1.5px solid #a8aa9b;border-radius:50%;background:#fff}.stage-track span.is-filled{background:var(--forest);border-color:var(--forest)}.lotus-progress small{color:var(--muted);font-size:.72rem}
+@keyframes lotus-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes lotus-idle-ripple{0%,100%{opacity:0;transform:scale(.8);border-color:rgba(255,255,255,0)}45%{opacity:.14;transform:scale(1.08);border-color:rgba(255,255,255,.28)}70%{opacity:.035;transform:scale(1.28);border-color:rgba(255,255,255,0)}}
+@keyframes lotus-old-stage{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.94)}}
+@keyframes lotus-new-stage{0%{opacity:0;transform:scale(.82)}62%{opacity:1;transform:scale(1.035)}100%{opacity:1;transform:scale(1)}}
+@keyframes lotus-water-ripple{0%{opacity:0;transform:scale(.62)}28%{opacity:.78;border-color:rgba(255,255,255,.7)}100%{opacity:0;transform:scale(1.7);border-color:rgba(255,255,255,0)}}
+@keyframes lotus-golden-ring{0%{opacity:.82;transform:scale(.7);box-shadow:0 0 0 0 rgba(213,165,107,0)}48%{opacity:.68;box-shadow:0 0 0 9px rgba(213,165,107,.2)}100%{opacity:0;transform:scale(1.45);box-shadow:0 0 0 22px rgba(213,165,107,0)}}
+@media(max-width:520px){.lotus-progress{gap:13px;padding:16px}.lotus-progress__image{width:92px}.lotus-progress h3{font-size:1.4rem}}
+@media(prefers-reduced-motion:reduce){.lotus-progress__photo--idle,.lotus-progress__photo--from,.lotus-progress__photo--to,.lotus-progress__water,.lotus-progress__glow{animation:none!important}}
