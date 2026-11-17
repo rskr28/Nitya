@@ -7,7 +7,7 @@ Runtime image paths are maintained in `src/config/assets.ts`. Assets are served 
 | File | Dimensions | Use | Origin / treatment |
 |---|---:|---|---|
 | `brand/nitya-logo-master.png` | 640 × 640 | Untouched source of truth | Original logo supplied by the product owner. Preserve byte-for-byte. |
-| `brand/nitya-logo-lockup.webp` | 320 × 224 | Complete desktop sidebar masthead | Transparent RGBA WebP derived faithfully from the master. Only the flat white paper background and outer whitespace are removed; lotus, wordmark, original proportions and tagline remain together. Displayed at a maximum width of 188px in the 244px ivory rail. |
+| `brand/nitya-logo-lockup.webp` | 320 × 224 | Complete desktop sidebar masthead | Transparent RGBA WebP derived faithfully from the master. Only the flat white paper background and outer whitespace are removed; lotus, wordmark, original proportions and tagline remain together. Displayed at a maximum width of 172px in the 244px ivory rail. |
 | `brand/nitya-symbol.png` | 245 × 203 | Compact tablet/mobile emblem | Faithful crop of the gold lotus from the master; no redraw or recolouring. |
 | `brand/favicon.png` | 64 × 53 | Browser favicon | Crop derived from the original lotus emblem. |
 
