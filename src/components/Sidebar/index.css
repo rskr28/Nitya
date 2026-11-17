@@ -16,18 +16,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 168px;
-  padding: 10px 0 20px;
-  margin: 0 0 12px;
+  width: 100%;
+  min-height: 160px;
+  padding: 12px 20px 16px;
+  margin: 0 0 16px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  text-decoration: none;
 }
 
 .sidebar__brand-lockup {
   display: block;
-  width: min(188px, calc(100% - 20px));
-  max-height: 132px;
+  width: min(172px, 100%);
+  max-height: 120px;
   height: auto;
   object-fit: contain;
   flex: 0 1 auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  filter: none;
 }
 
 .sidebar__brand-symbol {
@@ -35,6 +47,10 @@
   width: 48px;
   height: auto;
   object-fit: contain;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .sidebar__nav {
