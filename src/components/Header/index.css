@@ -65,11 +65,28 @@
     padding: 0 16px;
   }
 
+  .topbar__brand {
+    gap: 8px;
+  }
+
   .topbar__desktop-title {
-    display: none;
+    display: block;
+    font-size: .72rem;
+    letter-spacing: .005em;
+    white-space: nowrap;
   }
 
   .topbar__mobile-emblem {
     display: block;
+    width: 32px;
+    height: 28px;
+    flex: 0 0 auto;
+  }
+}
+
+
+@media (max-width: 360px) {
+  .topbar__desktop-title {
+    display: none;
   }
 }
